@@ -1,0 +1,75 @@
+{
+  "tp_metadata": {
+    "tp_id": "SOII-2026-TP6",
+    "title": "TP N° 6: Sistema de Archivos Distribuido (DFS)",
+    "catedra": "Sistemas Operativos II - UNJu Facultad de Ingeniería",
+    "version": "2.0.0"
+  },
+  "max_score": 100,
+  "exercises": {
+    "seccion1_conceptos": {
+      "title": "Sección 1: Conceptos Fundamentales de Sistemas de Archivos Distribuidos",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slides 3-9, 13-14, 18-23) y Silberschatz Cap. 17 sobre Fundamentos y Arquitectura de Sistemas de Archivos Distribuidos.",
+      "hashes": {
+        "q1_definicion_dfs": "cf0e27aac656f04512afa8e521fb715bf48ce24455141f591658d0ff4fdd905a",
+        "q2_rendimiento_dfs": "8ded8cd0c6141d39e2a771fa092b3e4f7eacc140585c82cc47f6ea34dc6c3cfe",
+        "q3_independencia_ubicacion": "a36ff776fdd2c0d8d0f482a5c489c0fd23173db2aff5762bf81000679661e706",
+        "q4_modelo_remoto_vs_carga": "ab67d478900ac4ca1d1c917fbfd0ea84aaeb87ec04c006937b499add1b4cdc38",
+        "q5_ubicacion_cache": "b62aa7e236993744326c35c55b0bb0701bf10af614bc61fee4432c2eff5ec0ea"
+      }
+    },
+    "seccion2_switches": {
+      "title": "Sección 2: Matriz de Clasificación Técnica con Switches Segmentados",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slides 15, 24-27, 31, 33) sobre políticas de caché, servidores con/sin estado y mecanismos de replicación.",
+      "hashes": {
+        "sw1_esquema_nfs": "672443ac41b65899a4c939e375afbd5c11ce67d5d1fd0c91c563160b346f5219",
+        "sw2_politica_escritura": "0a616c9b8a283a51291c9307f4d0d77bfce5e8b922dc865977798e63629facb8",
+        "sw3_semantica_coherencia": "a27a822b9860f925b61e9b78d657f05de28a5389824cef531391cdc3385959bc",
+        "sw4_arquitectura_servidor": "d1728d4d8abdb328775b50f71de3467b472d696b5f8e0f133edb925edeb7bacb",
+        "sw5_riesgo_replica_retrasada": "8f285709b185bd9dd0550541ba03f790660072b0cee6aa749b2d377228d3948c",
+        "sw6_replica_primaria_spof": "42c8ae4d635541210c24fd9a5bec6fd29f8bc8204640f298d092c90ec4ac035d"
+      }
+    },
+    "seccion3_laboratorio_acceso": {
+      "title": "Sección 3: Laboratorio Interactivo de Modelos de Acceso y Rendimiento",
+      "weight": 20,
+      "feedback": "Consultar el Simulador Interactivo de Modelos de Acceso, Diapositivas Unidad 6 (Slides 18-27) y Tanenbaum Cap. 10 sobre RPC, carga/descarga y servidores sin estado.",
+      "hashes": {
+        "sim_modelo_archivo_grande_pequeno_cambio": "835d3b28a56315ae3a9764029b76cf5e0544a0450ad030cf514b3b12c39c6150",
+        "sim_modelo_cargas_intensivas_locales": "07b6b586098c9430defa3cbf3795d37fd05074d16469a6ce7881132f2ea06e67",
+        "sim_impacto_write_through": "6bd427d9df3c94ed6dda5f679cae83fcf3eea6e989b444295307291fdaddfe5c",
+        "sim_tolerancia_fallos_stateless": "27172cf91420238d2c63effe67480d6663d8e90028624706470d2ee525e4e471"
+      }
+    },
+    "seccion4_flujo_rpc": {
+      "title": "Sección 4: Flujo Secuencial del Ciclo RPC de Birrell & Nelson",
+      "weight": 20,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slide 20) y Tanenbaum Cap. 10 sobre los pasos canónicos de RPC propuestos por Birrell y Nelson.",
+      "type": "ordered_list",
+      "list_key": "orden_ciclo_rpc",
+      "hashes": {
+        "items": [
+          "5980e00ae45b36edba67edf288dd167c1da9ab0dc186fc2dafa6cd9d3b5218a2",
+          "f8e13dc28b821755bdc07f899d8f75914807a8006a02ba30cbdb7363158a9624",
+          "6adf3e873963c53a14e1df9c036bb58f660e8fbe71bea8c42cd6b2b3f4672cc3",
+          "d79bc549783b74dfcc4f05454d3decf32a141ada2d3b2e7dbe5f9b0f098b8a1d",
+          "a1ff05fc818b2b67401805022abd523ff2a7ca1f47c0e45fcc2cd505c3a35b30",
+          "fd9ecc604e68c444e33b7cdfeabe5e879f103a5b1b736898f8cafbf93b327ecc"
+        ]
+      }
+    },
+    "seccion5_quorums_gifford": {
+      "title": "Sección 5: Laboratorio Matemático y Práctico de Consenso por Quórum de Gifford",
+      "weight": 20,
+      "feedback": "Consultar el Simulador de Quórums de Gifford, Diapositivas Unidad 6 (Slides 34-36) y Tanenbaum Cap. 11 sobre Quorum Consensus de Gifford.",
+      "hashes": {
+        "q1_condicion_lectura_escritura": "ae23ebd38d27b5f6a3c157b67963ad496aa90d19c30dfa860591093f04fde3ee",
+        "q2_condicion_escritura_escritura": "ff02ca88a02dc3522c6d86e8277ab42c435f10170e1ea9d38e6fa5950fd12b6f",
+        "q3_rowa_escritura_n5": "51451b54f273bb4608b1cc34ea3ccafded1b5c0d2735265a34f7f4ffc9796c80",
+        "q4_mayoria_n7": "baf4283ca30571fd37e062e1d4cce0489ac695748847349bf4cb0f270f01606a"
+      }
+    }
+  }
+}

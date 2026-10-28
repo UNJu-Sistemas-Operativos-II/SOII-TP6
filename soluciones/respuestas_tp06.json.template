@@ -1,0 +1,37 @@
+{
+  "estudiante": {
+    "nombre": "APELLIDO Y NOMBRE DEL ESTUDIANTE",
+    "legajo": "NUMERO_DE_LEGAJO",
+    "github": "USUARIO_GITHUB"
+  },
+  "seccion1_conceptos": {
+    "q1_definicion_dfs": "",
+    "q2_rendimiento_dfs": "",
+    "q3_independencia_ubicacion": "",
+    "q4_modelo_remoto_vs_carga": "",
+    "q5_ubicacion_cache": ""
+  },
+  "seccion2_switches": {
+    "sw1_esquema_nfs": "",
+    "sw2_politica_escritura": "",
+    "sw3_semantica_coherencia": "",
+    "sw4_arquitectura_servidor": "",
+    "sw5_riesgo_replica_retrasada": "",
+    "sw6_replica_primaria_spof": ""
+  },
+  "seccion3_laboratorio_acceso": {
+    "sim_modelo_archivo_grande_pequeno_cambio": "",
+    "sim_modelo_cargas_intensivas_locales": "",
+    "sim_impacto_write_through": "",
+    "sim_tolerancia_fallos_stateless": ""
+  },
+  "seccion4_flujo_rpc": {
+    "orden_ciclo_rpc": []
+  },
+  "seccion5_quorums_gifford": {
+    "q1_condicion_lectura_escritura": "",
+    "q2_condicion_escritura_escritura": "",
+    "q3_rowa_escritura_n5": "",
+    "q4_mayoria_n7": ""
+  }
+}

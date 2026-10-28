@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNJu SO II - TP N° 6: Sistema de Archivos Distribuido (DFS)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- SortableJS para Drag & Drop táctil -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Sticky Toolbar Superior Fija -->
+    <header class="sticky-toolbar">
+        <div class="toolbar-brand">
+            <span class="toolbar-logo">🗄️</span>
+            <span class="toolbar-title">UNJu SO II — TP N° 6: Sistema de Archivos Distribuido</span>
+        </div>
+        <div class="toolbar-progress">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-label" id="progress-label">0% (0/25)</span>
+        </div>
+        <div class="toolbar-actions">
+            <button class="btn btn-icon" id="btn-theme-toggle" title="Alternar Modo Claro / Oscuro">🌓</button>
+            <button class="btn btn-outline" id="btn-import-json" title="Cargar respuestas guardadas">📂 Cargar</button>
+            <input type="file" id="file-import-input" accept=".json" style="display: none;">
+            <button class="btn btn-primary" id="btn-download-json" disabled title="Debe completar los 25 ítems académicos y completar sus datos personales para descargar">
+                📥 Descargar respuestas_tp06.json
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Header Hero -->
+        <section class="header-hero">
+            <div class="header-meta">
+                <div class="badge-group">
+                    <span class="badge-tag blue">UNJu — Facultad de Ingeniería</span>
+                    <span class="badge-tag purple">Sistemas Operativos II — 2026</span>
+                    <span class="badge-tag emerald">Cátedra Vázquez — Argañaraz</span>
+                </div>
+                <span class="badge-tag blue">Unidad 6: DFS & RPC</span>
+            </div>
+            <h1>Laboratorio Interactivo de Sistema de Archivos Distribuido (DFS)</h1>
+            <p>
+                Plataforma interactiva de experimentación práctica y autoevaluación criptográfica. Analice el modelo arquitectónico de los DFS, experimente con los simuladores interactivos de modelos de acceso (RPC vs. Carga/Descarga), coherencia de caché (Write-Through vs. Write-Back) y el algoritmo de consenso por quórum de Gifford. Complete las 5 secciones académicas para generar su archivo de entrega <code>respuestas_tp06.json</code>.
+            </p>
+        </section>
+
+        <!-- Datos del Alumno -->
+        <section class="glass-card" id="card-alumno">
+            <h2 class="section-title">👤 Datos del Estudiante</h2>
+            <p class="section-desc">Ingrese sus datos identificatorios. Son validados para autorizar la exportación del archivo pero no incrementan el contador académico.</p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="alumno-nombre">Apellido y Nombre *</label>
+                    <input type="text" id="alumno-nombre" class="form-control" placeholder="Ej. Gómez, Lucas Matías" required>
+                </div>
+                <div class="form-group">
+                    <label for="alumno-legajo">Número de Legajo (L.U.) *</label>
+                    <input type="text" id="alumno-legajo" class="form-control" placeholder="Ej. 18240" required>
+                </div>
+                <div class="form-group">
+                    <label for="alumno-github">Usuario de GitHub *</label>
+                    <input type="text" id="alumno-github" class="form-control" placeholder="Ej. lgomez-unju" required>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: Conceptos Fundamentales (Radio Cards - Sin Negritas) -->
+        <section class="glass-card" id="seccion-1">
+            <h2 class="section-title">1️⃣ Conceptos Fundamentales de DFS y Transparencia</h2>
+            <p class="section-desc">Seleccione la alternativa conceptualmente correcta para cada enunciado teórico analizado en clase.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17 (Sistemas de Archivos Distribuidos). Andrew S. Tanenbaum: Capítulos 10 y 11 (Sistemas de Archivos Distribuidos). Diapositivas de Cátedra: Unidad 6 (Sistemas de Archivos Distribuidos, diapositivas 1 a 16).
+                </div>
+            </details>
+
+            <!-- Q1 -->
+            <div class="question-block" data-qid="q1_definicion_dfs">
+                <div class="question-header">1. En la arquitectura de un DFS, ¿cuál es la relación conceptual entre el Servicio de Archivos y el Servidor de Archivos?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_dfs" value="SERVIDOR_GENERA_INTERRUPCIONES_HARDWARE">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">El servicio gestiona la sincronización horaria de los buses y el servidor es el driver que programa las interrupciones del hardware.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_dfs" value="SERVICIO_ESPECIFICA_SERVIDOR_IMPLEMENTA">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">El servicio especifica las operaciones ofrecidas a los clientes y el servidor es el proceso que ejecuta la implementación.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_dfs" value="SERVICIO_DISCO_FISICO_SERVIDOR_PROCESO_USUARIO">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">El servicio representa el almacenamiento físico en disco local y el servidor es el microkernel que despacha tareas en RAM.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q1_definicion_dfs" value="SERVIDOR_DEFINE_PRIMITIVAS_SERVICIO_EJECUTA_USUARIO">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">El servidor define las primitivas de interfaz abstracta y el servicio es el hilo del cliente que las invoca mediante traps.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-block" data-qid="q2_rendimiento_dfs">
+                <div class="question-header">2. Según el modelo analítico de rendimiento de un DFS, ¿cuáles son los componentes determinantes del tiempo total de respuesta?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q2_rendimiento_dfs" value="FRECUENCIA_RELOJ_Y_BUS_PCI">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">La frecuencia del oscilador de cuarzo de la placa madre y la tasa de refresco dinámico de la memoria RAM del host.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_rendimiento_dfs" value="NUMERO_INODOS_Y_CILINDROS_EXT4">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">La cantidad estática de inodos en el superbloque y el número de sectores lógicos asignados a la memoria swap.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_rendimiento_dfs" value="ACCESO_DISCO_LATENCIA_RED_COSTO_CPU">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">El acceso a disco, el tiempo de entrega y respuesta por red y el costo de CPU incurrido por comunicación.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q2_rendimiento_dfs" value="TAMANO_TABLA_PAGINAS_Y_TLB">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">El tamaño asignado a la tabla de páginas invertida y los aciertos en la memoria asociativa de traducción TLB.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-block" data-qid="q3_independencia_ubicacion">
+                <div class="question-header">3. ¿Qué propiedad técnica distingue a la "Independencia de Ubicación" frente a la "Transparencia Estática de Ubicación"?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q3_independencia_ubicacion" value="PERMITE_MIGRACION_SIN_CAMBIAR_NOMBRE">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">Permite mover físicamente los archivos entre servidores sin que cambie su nombre lógico a nivel de usuario.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_independencia_ubicacion" value="OBLIGA_ESPECIFICAR_DIRECCION_IP">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">Exige indicar explícitamente la dirección IP y el puerto del host servidor en cada acceso al archivo.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_independencia_ubicacion" value="RESTRINGE_ARCHIVOS_A_MEMORIA_RAM">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">Inhabilita el almacenamiento en discos magnéticos limitando la residencia de archivos a memoria RAM.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q3_independencia_ubicacion" value="ASIGNA_NOMBRES_NUMERICOS_FIJOS">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">Asigna identificadores numéricos inmutables vinculados rígidamente a los cilindros físicos de almacenamiento.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-block" data-qid="q4_modelo_remoto_vs_carga">
+                <div class="question-header">4. Al evaluar el Modelo de Servicio Remoto (RPC) frente al Modelo Carga/Descarga, ¿cuál es la ventaja operativa crucial de RPC?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q4_modelo_remoto_vs_carga" value="DESCARGA_TODO_EL_DIRECTORIO_EN_RAM">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">Descarga el directorio completo en la memoria del cliente permitiendo lecturas sin intervención de la CPU.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_modelo_remoto_vs_carga" value="EVITA_TRANSFERENCIA_TOTAL_DEL_ARCHIVO">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">No requiere transferir el archivo completo al cliente si solo se accede a una pequeña porción del mismo.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_modelo_remoto_vs_carga" value="SUPRIME_TODO_EL_TRAFICO_DE_RED">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">Suprime completamente el tráfico en los enlaces físicos de red mediante enlaces de memoria compartida.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q4_modelo_remoto_vs_carga" value="EXIGE_DISCOS_LOCALES_DE_GRAN_CAPACIDAD">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">Obliga a que cada estación de trabajo cuente con particiones de disco de capacidad idéntica al servidor.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-block" data-qid="q5_ubicacion_cache">
+                <div class="question-header">5. En los esquemas de caché para DFS, ¿qué beneficio fundamental aportan las cachés en Memoria Principal (RAM) frente al disco local?</div>
+                <div class="radio-cards-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="q5_ubicacion_cache" value="GARANTIZA_PERSISTENCIA_TOTAL_SIN_ENERGIA">
+                        <span class="radio-letter">A)</span>
+                        <span class="radio-text">Preservan la totalidad de las modificaciones ante interrupciones imprevistas del fluido eléctrico del nodo.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_ubicacion_cache" value="SOPORTA_ESTACIONES_SIN_DISCO_Y_MAYOR_VELOCIDAD">
+                        <span class="radio-letter">B)</span>
+                        <span class="radio-text">Permiten la operación de estaciones de trabajo sin disco (diskless) y ofrecen velocidades de acceso superiores.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_ubicacion_cache" value="ELIMINA_PROTOCOLOS_DE_COHERENCIA">
+                        <span class="radio-letter">C)</span>
+                        <span class="radio-text">Hacen innecesaria la ejecución de algoritmos de sincronización de réplicas entre cliente y servidor.</span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="q5_ubicacion_cache" value="AMPLIA_EL_ESPACIO_DE_SWAP_EN_DISCO">
+                        <span class="radio-letter">D)</span>
+                        <span class="radio-text">Incrementan la tasa de transferencia de los buses SATA al reescribir las tablas de partición MBR.</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Switches Segmentados -->
+        <section class="glass-card" id="seccion-2">
+            <h2 class="section-title">2️⃣ Matriz de Clasificación Técnica con Switches Segmentados</h2>
+            <p class="section-desc">Analice cada uno de los 6 escenarios técnicos y seleccione el principio o técnica de diseño que le corresponde.</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17. Andrew S. Tanenbaum: Capítulo 10 y 11. Diapositivas de Cátedra: Unidad 6 (Diapositivas 15, 23 a 33).
+                </div>
+            </details>
+
+            <div class="switches-grid">
+                <!-- SW1 -->
+                <div class="switch-card" data-swid="sw1_esquema_nfs">
+                    <div class="switch-title">Esquema de nombrado NFS (asociación de directorios remotos a directorios locales)</div>
+                    <div class="switch-desc">¿Qué nivel de abstracción de nombrado provee este mecanismo según la teoría?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="TRANSPARENCIA_ESTATICA_UBICACION">Transparencia Estática de Ubicación</button>
+                        <button type="button" class="segment-btn" data-value="INDEPENDENCIA_DINAMICA_MOVILIDAD">Independencia Dinámica de Movilidad</button>
+                    </div>
+                </div>
+
+                <!-- SW2 -->
+                <div class="switch-card" data-swid="sw2_politica_escritura">
+                    <div class="switch-title">Política de Escritura Directa (Write-Through) en caché</div>
+                    <div class="switch-desc">¿Cuál es la prioridad fundamental de diseño que persigue esta política?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="MAXIMA_FIABILIDAD">Máxima Fiabilidad de Datos</button>
+                        <button type="button" class="segment-btn" data-value="MAXIMA_VELOCIDAD_ESCRITURA">Máxima Velocidad de Escritura</button>
+                    </div>
+                </div>
+
+                <!-- SW3 -->
+                <div class="switch-card" data-swid="sw3_semantica_coherencia">
+                    <div class="switch-title">Mantenimiento de Coherencia de Caché mediante Callbacks (AFS)</div>
+                    <div class="switch-desc">¿Quién toma la iniciativa activa al detectar una modificación en el archivo?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="INICIO_POR_SERVIDOR">Inicio por parte del Servidor</button>
+                        <button type="button" class="segment-btn" data-value="INICIO_POR_CLIENTE">Inicio por parte del Cliente</button>
+                    </div>
+                </div>
+
+                <!-- SW4 -->
+                <div class="switch-card" data-swid="sw4_arquitectura_servidor">
+                    <div class="switch-title">Servidores de archivos sin memoria de estado (Stateless)</div>
+                    <div class="switch-desc">¿Qué modelo arquitectónico de servidor describe esta característica?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="SERVICIO_STATELESS">Servicio sin Estado (Stateless)</button>
+                        <button type="button" class="segment-btn" data-value="SERVICIO_STATEFUL">Servicio con Estado (Stateful)</button>
+                    </div>
+                </div>
+
+                <!-- SW5 -->
+                <div class="switch-card" data-swid="sw5_riesgo_replica_retrasada">
+                    <div class="switch-title">Riesgo intrínseco en la técnica de Réplica Retrasada (Lazy Replication)</div>
+                    <div class="switch-desc">¿Qué anomalía de coherencia puede presentarse antes de sincronizar?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="VENTANA_DE_INCONSISTENCIA">Ventana de Inconsistencia Temporal</button>
+                        <button type="button" class="segment-btn" data-value="SOBRECARGA_DE_CPU_EN_CLIENTE">Sobrecarga de CPU en Cliente</button>
+                    </div>
+                </div>
+
+                <!-- SW6 -->
+                <div class="switch-card" data-swid="sw6_replica_primaria_spof">
+                    <div class="switch-title">Vulnerabilidad de la Réplica de Copia Primaria (Primary-Backup)</div>
+                    <div class="switch-desc">¿Cuál es el principal defecto de robustez si cae el servidor primario?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="PUNTO_UNICO_DE_FALLO_EN_PRIMARIO">Punto Único de Fallo en Primario</button>
+                        <button type="button" class="segment-btn" data-value="LACK_DE_CONSISTENCIA_SECUNDARIOS">Divergencia entre Secundarios</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Laboratorio Interactivo de Modelos de Acceso (Simulador RPC vs Carga/Descarga) -->
+        <section class="glass-card" id="seccion-3">
+            <h2 class="section-title">3️⃣ Laboratorio de Rendimiento: Servicio Remoto (RPC) vs. Carga/Descarga</h2>
+            <p class="section-desc">
+                Experimente con el simulador interactivo configurando tamaños de archivo, latencia de red y patrones de acceso. Analice los resultados y responda las consignas técnicas.
+            </p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne: Capítulo 17 (Acceso Remoto a Archivos). Andrew S. Tanenbaum: Cap. 10 (Modelos de Servicio Remoto y Carga/Descarga). Diapositivas de Cátedra: Unidad 6 (Diapositivas 18 a 27).
+                </div>
+            </details>
+
+            <!-- SIMULADOR INTERACTIVO DE MODELOS DE ACCESO -->
+            <div class="interactive-simulator-box">
+                <div class="sim-header">
+                    <div class="sim-title">🔬 Simulador Interactivo de Acceso a Archivos en Red</div>
+                    <div class="sim-controls">
+                        <button class="btn btn-primary" id="btn-run-access-sim">▶ Iniciar Simulación</button>
+                        <button class="btn btn-outline" id="btn-reset-access-sim">↺ Restablecer</button>
+                    </div>
+                </div>
+
+                <div class="sim-config-grid">
+                    <div class="sim-control-group">
+                        <label for="sim-file-size">Tamaño Total del Archivo:</label>
+                        <select id="sim-file-size" class="form-control">
+                            <option value="1">1 Megabyte (1 MB)</option>
+                            <option value="20" selected>20 Megabytes (20 MB)</option>
+                            <option value="200">200 Megabytes (200 MB)</option>
+                        </select>
+                    </div>
+                    <div class="sim-control-group">
+                        <label for="sim-workload">Patrón de Operaciones:</label>
+                        <select id="sim-workload" class="form-control">
+                            <option value="single_write" selected>Modificar 1 solo bloque de 4 KB (0.02% del archivo)</option>
+                            <option value="sequential_read">Lectura secuencial del 50% del archivo</option>
+                            <option value="intensive_local">Ciclo de desarrollo (100 lecturas y 50 escrituras)</option>
+                        </select>
+                    </div>
+                    <div class="sim-control-group">
+                        <label for="sim-latency">Latencia de Red (RTT):</label>
+                        <select id="sim-latency" class="form-control">
+                            <option value="1">1 ms (Red LAN Gigabit local)</option>
+                            <option value="25" selected>25 ms (Red Campus / Metropolitana)</option>
+                            <option value="90">90 ms (Enlace WAN intercontinental)</option>
+                        </select>
+                    </div>
+                    <div class="sim-control-group">
+                        <label for="sim-bandwidth">Ancho de Banda de Red:</label>
+                        <select id="sim-bandwidth" class="form-control">
+                            <option value="10">10 Mbps (Enlace restringido)</option>
+                            <option value="100" selected>100 Mbps (Ethernet estándar)</option>
+                            <option value="1000">1000 Mbps (Gigabit Ethernet)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Visualización de Red y Paquetes -->
+                <div class="sim-network-stage">
+                    <div class="network-node client-node">
+                        <div class="node-icon">💻</div>
+                        <div class="node-name">Cliente</div>
+                        <div class="node-badge" id="client-status">En Espera</div>
+                        <div class="node-detail" id="client-cache-detail">Caché: 0 KB</div>
+                    </div>
+
+                    <div class="network-channel">
+                        <div class="channel-line"></div>
+                        <div class="packet packet-req" id="sim-packet-req">📦 Solicitud</div>
+                        <div class="packet packet-res" id="sim-packet-res">📑 Datos</div>
+                        <div class="channel-label" id="channel-status">Enlace inactivo</div>
+                    </div>
+
+                    <div class="network-node server-node">
+                        <div class="node-icon">🖥️</div>
+                        <div class="node-name">Servidor de Archivos</div>
+                        <div class="node-badge" id="server-status">Escuchando</div>
+                        <div class="node-detail" id="server-file-detail">Archivo Maestro</div>
+                    </div>
+                </div>
+
+                <!-- Tablero Comparativo de Métricas -->
+                <div class="sim-metrics-table-wrapper">
+                    <table class="sim-metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Modelo Evaluado</th>
+                                <th>Transferencia Inicial</th>
+                                <th>Ejecución de Operaciones</th>
+                                <th>Transferencia Final</th>
+                                <th>Tiempo Total Estimado</th>
+                                <th>Tráfico de Red</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="row-rpc">
+                                <td><span class="badge-tag blue">Servicio Remoto (RPC)</span></td>
+                                <td id="rpc-init">0 ms</td>
+                                <td id="rpc-exec">0 ms</td>
+                                <td id="rpc-final">0 ms</td>
+                                <td id="rpc-total" class="metric-highlight">0 ms</td>
+                                <td id="rpc-traffic">0 KB</td>
+                            </tr>
+                            <tr id="row-uploaddownload">
+                                <td><span class="badge-tag purple">Carga / Descarga</span></td>
+                                <td id="ud-init">0 ms</td>
+                                <td id="ud-exec">0 ms</td>
+                                <td id="ud-final">0 ms</td>
+                                <td id="ud-total" class="metric-highlight">0 ms</td>
+                                <td id="ud-traffic">0 KB</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="sim-log-monitor" id="access-sim-log">
+                    <div class="log-entry system">ℹ Seleccione los parámetros de red y ejecute la simulación para comparar ambos modelos.</div>
+                </div>
+            </div>
+
+            <!-- Preguntas Evaluativas de la Sección 3 -->
+            <div class="form-grid-2col mt-4">
+                <div class="form-group" data-itemkey="sim_modelo_archivo_grande_pequeno_cambio">
+                    <label for="sel-lab-q1">1. Para un archivo de 200 MB donde solo se modifica 1 bloque de 4 KB: ¿Qué modelo minimiza tiempo y tráfico?</label>
+                    <select id="sel-lab-q1" class="form-control" data-itemkey="sim_modelo_archivo_grande_pequeno_cambio">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="CARGA_DESCARGA">Modelo Carga y Descarga con transferencia íntegra</option>
+                        <option value="SERVICIO_REMOTO_RPC">Modelo de Servicio Remoto mediante llamadas RPC</option>
+                        <option value="REPLICA_EXPLICITA_MANUAL">Replicación manual secuencial en cada cliente</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="sim_modelo_cargas_intensivas_locales">
+                    <label for="sel-lab-q2">2. Para un ciclo de compilación con 500 lecturas y modificaciones consecutivas: ¿Qué modelo maximiza el rendimiento?</label>
+                    <select id="sel-lab-q2" class="form-control" data-itemkey="sim_modelo_cargas_intensivas_locales">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="SERVICIO_REMOTO_RPC">Modelo de Servicio Remoto por llamada individual</option>
+                        <option value="CARGA_DESCARGA">Modelo Carga y Descarga con ejecución en disco local</option>
+                        <option value="MONTAJE_ESTATICO_SIN_CACHE">Montaje NFS deshabilitando completamente la memoria RAM</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="sim_impacto_write_through">
+                    <label for="sel-lab-q3">3. Al operar sobre un enlace de alta latencia RTT (ej. WAN 90 ms), ¿cuál es el factor crítico que degrada a Write-Through?</label>
+                    <select id="sel-lab-q3" class="form-control" data-itemkey="sim_impacto_write_through">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="BLOQUEO_POR_LATENCIA_RTT_EN_CADA_ESCRITURA">El bloqueo del cliente esperando acuse remoto en cada write</option>
+                        <option value="DESBORDAMIENTO_DE_PAGINAS_SWAP_EN_CLIENTE">El desbordamiento involuntario del espacio swap del cliente</option>
+                        <option value="CORRUPCION_ESPONTANEA_DE_INODOS_EXT4">La degradación por fragmentación del sistema ext4 en disco</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="sim_tolerancia_fallos_stateless">
+                    <label for="sel-lab-q4">4. ¿Qué fundamento permite a un servidor Stateless reanudar el servicio sin pérdida tras reiniciar luego de una caída?</label>
+                    <select id="sel-lab-q4" class="form-control" data-itemkey="sim_tolerancia_fallos_stateless">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="PETICIONES_AUTOCONTENIDAS_E_IDEMPOTENTES">Peticiones RPC autocontenidas y operaciones idempotentes</option>
+                        <option value="REGISTRO_DE_OFFSETS_EN_MEMORIA_NO_VOLATIL">El guardado permanente de los punteros offset en la BIOS</option>
+                        <option value="SINCRONIZACION_POR_RELOJES_DE_LAMPORT">La serialización estricta mediante relojes lógicos de Lamport</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Ciclo de Vida RPC (Drag & Drop con SortableJS) -->
+        <section class="glass-card" id="seccion-4">
+            <h2 class="section-title">4️⃣ Ciclo de Vida de una Llamada RPC (Birrell & Nelson)</h2>
+            <p class="section-desc">
+                Ordene secuencialmente las 6 etapas canónicas de una llamada a procedimiento remoto (RPC). Arrastre las tarjetas desde el banco de origen hacia las posiciones numeradas.
+            </p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne: Capítulo 17. Andrew S. Tanenbaum: Cap. 10 (RPC y Stubs). Diapositivas de Cátedra: Unidad 6 (Diapositivas 17 a 20).
+                </div>
+            </details>
+
+            <div class="dnd-container">
+                <!-- Banco de Origen -->
+                <div class="dnd-column">
+                    <div class="dnd-header">
+                        <span>📦 Banco de Etapas Disponibles</span>
+                        <button class="btn btn-sm btn-outline" id="btn-reset-dnd">↺ Reiniciar Orden</button>
+                    </div>
+                    <div class="dnd-bank" id="dnd-source-bank">
+                        <div class="dnd-card" data-step-id="1_CLIENTE_LLAMA_STUB_LOCAL">
+                            <span class="dnd-icon">🧑‍💻</span>
+                            <span class="dnd-label">El procedimiento cliente efectúa una llamada al Stub del Cliente local</span>
+                        </div>
+                        <div class="dnd-card" data-step-id="2_STUB_CLIENTE_CONSTRUYE_MENSAJE">
+                            <span class="dnd-icon">📦</span>
+                            <span class="dnd-label">El Stub del Cliente empaqueta parámetros y genera una trampa (trap) al núcleo</span>
+                        </div>
+                        <div class="dnd-card" data-step-id="3_KERNEL_LOCAL_TRANSMITE_RED">
+                            <span class="dnd-icon">🌐</span>
+                            <span class="dnd-label">El núcleo local transmite el mensaje por la red hacia el núcleo del host remoto</span>
+                        </div>
+                        <div class="dnd-card" data-step-id="4_KERNEL_REMOTO_ENTREGA_STUB_SERVIDOR">
+                            <span class="dnd-icon">📥</span>
+                            <span class="dnd-label">El núcleo remoto recibe el paquete y se lo entrega al Stub del Servidor</span>
+                        </div>
+                        <div class="dnd-card" data-step-id="5_STUB_SERVIDOR_DESEMPAQUETA_Y_EJECUTA">
+                            <span class="dnd-icon">⚙️</span>
+                            <span class="dnd-label">El Stub del Servidor desempaca los parámetros e invoca al procedimiento servidor</span>
+                        </div>
+                        <div class="dnd-card" data-step-id="6_SERVIDOR_RETORNA_RESULTADO_A_STUB">
+                            <span class="dnd-icon">📤</span>
+                            <span class="dnd-label">El servidor procesa el requerimiento y retorna el resultado al Stub para el viaje de vuelta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zona de Destino Ordenada -->
+                <div class="dnd-column">
+                    <div class="dnd-header">
+                        <span>📋 Secuencia de Ejecución Ordenada (Etapa 1 a 6)</span>
+                        <span class="badge-tag emerald" id="dnd-counter">0 / 6 asignadas</span>
+                    </div>
+                    <div class="dnd-target-list" id="dnd-target-list">
+                        <div class="dnd-slot" data-slot="0">
+                            <span class="slot-number">1°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                        <div class="dnd-slot" data-slot="1">
+                            <span class="slot-number">2°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                        <div class="dnd-slot" data-slot="2">
+                            <span class="slot-number">3°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                        <div class="dnd-slot" data-slot="3">
+                            <span class="slot-number">4°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                        <div class="dnd-slot" data-slot="4">
+                            <span class="slot-number">5°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                        <div class="dnd-slot" data-slot="5">
+                            <span class="slot-number">6°</span>
+                            <div class="slot-dropzone"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: Consenso por Quórum de Gifford -->
+        <section class="glass-card" id="seccion-5">
+            <h2 class="section-title">5️⃣ Laboratorio Matemático y Práctico: Consenso por Quórum de Gifford</h2>
+            <p class="section-desc">
+                Interectúe con el clúster de réplicas distribuidas. Configure los quórums de lectura (Nr) y escritura (Nw), simule caídas de nodos y compruebe las reglas de consistencia de Gifford.
+            </p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne: Capítulo 17. Andrew S. Tanenbaum: Cap. 11 (Replicación y Quórum Consensus de Gifford). Diapositivas de Cátedra: Unidad 6 (Diapositivas 28 a 36).
+                </div>
+            </details>
+
+            <!-- SIMULADOR INTERACTIVO DE QUÓRUM DE GIFFORD -->
+            <div class="interactive-simulator-box">
+                <div class="sim-header">
+                    <div class="sim-title">⚖️ Clúster Replicado con Protocolo de Quórum (N = 7 Servidores)</div>
+                    <div class="sim-controls">
+                        <button class="btn btn-outline btn-sm" id="btn-preset-rowa">Preset ROWA</button>
+                        <button class="btn btn-outline btn-sm" id="btn-preset-majority">Preset Mayoría</button>
+                        <button class="btn btn-outline btn-sm" id="btn-preset-invalid">Preset Inseguro</button>
+                    </div>
+                </div>
+
+                <!-- Controles de Quórum y Fórmulas en Vivo -->
+                <div class="quorum-controls-panel">
+                    <div class="quorum-input-group">
+                        <label for="quorum-nr-slider">Quórum de Lectura (Nr): <strong id="lbl-nr-val">4</strong></label>
+                        <input type="range" id="quorum-nr-slider" min="1" max="7" value="4" class="form-range">
+                    </div>
+                    <div class="quorum-input-group">
+                        <label for="quorum-nw-slider">Quórum de Escritura (Nw): <strong id="lbl-nw-val">4</strong></label>
+                        <input type="range" id="quorum-nw-slider" min="1" max="7" value="4" class="form-range">
+                    </div>
+                    <div class="quorum-actions-group">
+                        <button class="btn btn-primary btn-sm" id="btn-exec-read">📖 Leer Archivo</button>
+                        <button class="btn btn-secondary btn-sm" id="btn-exec-write">✍️ Escribir Archivo</button>
+                        <button class="btn btn-outline btn-sm" id="btn-heal-nodes">🏥 Reparar Nodos</button>
+                    </div>
+                </div>
+
+                <!-- Estado Matemático de las Reglas de Gifford -->
+                <div class="gifford-status-panel">
+                    <div class="rule-card" id="rule-read-write">
+                        <div class="rule-header">Regla 1: Prevención Conflicto Lectura-Escritura</div>
+                        <div class="rule-math" id="rule-rw-math">Nr + Nw > N  →  4 + 4 > 7  (8 > 7)</div>
+                        <div class="rule-badge badge-tag emerald" id="rule-rw-badge">✅ Válido (Solapamiento asegurado)</div>
+                    </div>
+                    <div class="rule-card" id="rule-write-write">
+                        <div class="rule-header">Regla 2: Prevención Conflicto Escritura-Escritura</div>
+                        <div class="rule-math" id="rule-ww-math">Nw > N/2  →  4 > 3.5</div>
+                        <div class="rule-badge badge-tag emerald" id="rule-ww-badge">✅ Válido (Quórum único mayoritario)</div>
+                    </div>
+                </div>
+
+                <!-- Visualización de los 7 Servidores Replicados -->
+                <div class="replica-cluster-grid" id="cluster-nodes-grid">
+                    <!-- Servidores S1 a S7 se renderizan dinámicamente con JS -->
+                </div>
+
+                <div class="sim-log-monitor" id="quorum-sim-log">
+                    <div class="log-entry system">ℹ Haga clic en cualquier servidor para simular su caída (offline) o use los botones de lectura y escritura.</div>
+                </div>
+            </div>
+
+            <!-- Preguntas Evaluativas de la Sección 5 -->
+            <div class="form-grid-2col mt-4">
+                <div class="form-group" data-itemkey="q1_condicion_lectura_escritura">
+                    <label for="sel-gifford-q1">1. ¿Qué condición formuló Gifford para garantizar que cualquier lectura obtenga la última versión escrita?</label>
+                    <select id="sel-gifford-q1" class="form-control" data-itemkey="q1_condicion_lectura_escritura">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="NR_MAS_NW_MAYOR_N">Quórum de lectura más quórum de escritura mayor a N (Nr + Nw &gt; N)</option>
+                        <option value="NR_IGUAL_CERO">Quórum de lectura idéntico a cero para evitar tráfico en la red</option>
+                        <option value="NR_MULTIPLICADO_POR_NW_IGUAL_N">El producto de ambos quórums debe coincidir exactamente con N</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="q2_condicion_escritura_escritura">
+                    <label for="sel-gifford-q2">2. ¿Qué condición evita que dos escrituras simultáneas se ejecuten sobre conjuntos disjuntos de réplicas?</label>
+                    <select id="sel-gifford-q2" class="form-control" data-itemkey="q2_condicion_escritura_escritura">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="NW_MAYOR_N_MEDIOS">El quórum de escritura debe superar a la mitad estricta (Nw &gt; N/2)</option>
+                        <option value="NW_IGUAL_UNO">El quórum de escritura debe ser unitario para asegurar celeridad</option>
+                        <option value="NW_MENOR_N_CUARTOS">El quórum de escritura no debe exceder a la cuarta parte de los nodos</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="q3_rowa_escritura_n5">
+                    <label for="sel-gifford-q3">3. En un esquema ROWA (Read-One, Write-All) con N = 5 servidores, ¿cuál es el quórum de escritura Nw exigido?</label>
+                    <select id="sel-gifford-q3" class="form-control" data-itemkey="q3_rowa_escritura_n5">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="1">1 servidor</option>
+                        <option value="3">3 servidores</option>
+                        <option value="5">5 servidores</option>
+                    </select>
+                </div>
+
+                <div class="form-group" data-itemkey="q4_mayoria_n7">
+                    <label for="sel-gifford-q4">4. En un clúster de N = 7 servidores con política simétrica de mayoría simple, ¿qué valores adoptan Nr y Nw?</label>
+                    <select id="sel-gifford-q4" class="form-control" data-itemkey="q4_mayoria_n7">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="NR_1_NW_7">Nr = 1 y Nw = 7</option>
+                        <option value="NR_4_NW_4">Nr = 4 y Nw = 4</option>
+                        <option value="NR_7_NW_1">Nr = 7 y Nw = 1</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botón de Descarga Inferior -->
+        <section class="glass-card text-center" id="card-export">
+            <h2 class="section-title">📦 Finalización y Entrega de Respuestas</h2>
+            <p class="section-desc">
+                Una vez completados los 25 ítems académicos y cargados sus datos de estudiante, presione el botón para descargar el archivo de entrega.
+            </p>
+            <div class="download-container">
+                <button class="btn btn-primary btn-lg" id="btn-download-bottom" disabled>
+                    📥 Descargar soluciones/respuestas_tp06.json
+                </button>
+                <div class="status-summary" id="download-status-msg">
+                    Complete las actividades para desbloquear la descarga del archivo de respuestas.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
