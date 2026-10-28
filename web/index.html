@@ -27,13 +27,13 @@
             <div class="progress-track">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
-            <span class="progress-label" id="progress-label">0% (0/25)</span>
+            <span class="progress-label" id="progress-label">0% (0/30)</span>
         </div>
         <div class="toolbar-actions">
             <button class="btn btn-icon" id="btn-theme-toggle" title="Alternar Modo Claro / Oscuro">🌓</button>
             <button class="btn btn-outline" id="btn-import-json" title="Cargar respuestas guardadas">📂 Cargar</button>
             <input type="file" id="file-import-input" accept=".json" style="display: none;">
-            <button class="btn btn-primary" id="btn-download-json" disabled title="Debe completar los 25 ítems académicos y completar sus datos personales para descargar">
+            <button class="btn btn-primary" id="btn-download-json" disabled title="Debe completar los 30 ítems académicos y completar sus datos personales para descargar">
                 📥 Descargar respuestas_tp06.json
             </button>
         </div>
@@ -48,11 +48,11 @@
                     <span class="badge-tag purple">Sistemas Operativos II — 2026</span>
                     <span class="badge-tag emerald">Cátedra Vázquez — Argañaraz</span>
                 </div>
-                <span class="badge-tag blue">Unidad 6: DFS & RPC</span>
+                <span class="badge-tag blue">Unidad 6: DFS, RPC & Gifford</span>
             </div>
             <h1>Laboratorio Interactivo de Sistema de Archivos Distribuido (DFS)</h1>
             <p>
-                Plataforma interactiva de experimentación práctica y autoevaluación criptográfica. Analice el modelo arquitectónico de los DFS, experimente con los simuladores interactivos de modelos de acceso (RPC vs. Carga/Descarga), coherencia de caché (Write-Through vs. Write-Back) y el algoritmo de consenso por quórum de Gifford. Complete las 5 secciones académicas para generar su archivo de entrega <code>respuestas_tp06.json</code>.
+                Plataforma interactiva de experimentación práctica y autoevaluación criptográfica con cobertura exhaustiva de la Unidad 6. Analice el modelo arquitectónico de DFS, esquemas de nombrado y mapeo de objetos, experimente con los simuladores interactivos de modelos de acceso (RPC vs. Carga/Descarga), políticas de caché y replicación, y el algoritmo de consenso por quórum de Gifford. Complete las 6 secciones académicas (30 ítems) para generar su archivo de entrega <code>respuestas_tp06.json</code>.
             </p>
         </section>
 
@@ -78,13 +78,13 @@
 
         <!-- SECCIÓN 1: Conceptos Fundamentales (Radio Cards - Sin Negritas) -->
         <section class="glass-card" id="seccion-1">
-            <h2 class="section-title">1️⃣ Conceptos Fundamentales de DFS y Transparencia</h2>
-            <p class="section-desc">Seleccione la alternativa conceptualmente correcta para cada enunciado teórico analizado en clase.</p>
+            <h2 class="section-title">1️⃣ Conceptos Fundamentales y Rendimiento de DFS</h2>
+            <p class="section-desc">Seleccione la alternativa conceptualmente correcta para cada enunciado analizado en la teoría de cátedra.</p>
 
             <details class="biblio-panel">
                 <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
                 <div class="biblio-content">
-                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17 (Sistemas de Archivos Distribuidos). Andrew S. Tanenbaum: Capítulos 10 y 11 (Sistemas de Archivos Distribuidos). Diapositivas de Cátedra: Unidad 6 (Sistemas de Archivos Distribuidos, diapositivas 1 a 16).
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17 (Sistemas de Archivos Distribuidos). Andrew S. Tanenbaum: Capítulos 10 y 11. Diapositivas de Cátedra: Unidad 6 (Diapositivas 1 a 9, 13-14, 18-23).
                 </div>
             </details>
 
@@ -224,36 +224,106 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: Switches Segmentados -->
+        <!-- SECCIÓN 2: Arquitectura de Nombrado, Transparencia y Mapeo de Objetos (NUEVA SECCIÓN COMPLETA) -->
         <section class="glass-card" id="seccion-2">
-            <h2 class="section-title">2️⃣ Matriz de Clasificación Técnica con Switches Segmentados</h2>
-            <p class="section-desc">Analice cada uno de los 6 escenarios técnicos y seleccione el principio o técnica de diseño que le corresponde.</p>
+            <h2 class="section-title">2️⃣ Arquitectura de Nombrado, Transparencia y Mapeo de Objetos</h2>
+            <p class="section-desc">Analice la cadena de resolución de nombres y los 3 esquemas de nombrado estudiados en la teoría (Diapositivas 10 a 15).</p>
 
             <details class="biblio-panel">
                 <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
                 <div class="biblio-content">
-                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17. Andrew S. Tanenbaum: Capítulo 10 y 11. Diapositivas de Cátedra: Unidad 6 (Diapositivas 15, 23 a 33).
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17 (Estructura de Nombrado). Andrew S. Tanenbaum: Cap. 10. Diapositivas de Cátedra: Unidad 6 (Diapositivas 10 a 15: Mapeo de objetos, Transparencia vs. Independencia y las 3 técnicas de nombrado).
+                </div>
+            </details>
+
+            <div class="form-grid-2col">
+                <!-- NOM 1 -->
+                <div class="form-group" data-itemkey="nom1_host_local">
+                    <label for="sel-nom-1">1. En la técnica de nombrado basada en <code>host:nombre_local</code> (ej. <code>host:/ruta/archivo</code>): ¿Qué propiedades ofrece?</label>
+                    <select id="sel-nom-1" class="form-control" data-itemkey="nom1_host_local">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="SIN_TRANSPARENCIA_NI_INDEPENDENCIA">Carece de transparencia en la ubicación e independencia respecto a la ubicación</option>
+                        <option value="TRANSPARENCIA_DINAMICA_TOTAL">Otorga transparencia dinámica total permitiendo migración autónoma de archivos</option>
+                        <option value="INDEPENDENCIA_POR_ENLACES">Provee independencia de ubicación supeditada al uso exclusivo de enlaces simbólicos</option>
+                    </select>
+                </div>
+
+                <!-- NOM 2 -->
+                <div class="form-group" data-itemkey="nom2_montaje_nfs">
+                    <label for="sel-nom-2">2. En el esquema de asociación (montaje) de directorios remotos a locales (NFS): ¿Cómo es la visión del espacio de nombres?</label>
+                    <select id="sel-nom-2" class="form-control" data-itemkey="nom2_montaje_nfs">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="TRANSPARENCIA_ESTATICA_VISTAS_DISIMILES">Brinda apariencia de árbol local coherente pero clientes con montajes distintos ven espacios disímiles</option>
+                        <option value="ARBOL_GLOBAL_IDENTICO_EN_TODA_LA_RED">Establece un árbol global universalmente idéntico para la totalidad de clientes y terminales de la red</option>
+                        <option value="DIRECCIONAMIENTO_DIRECTO_A_SECTORES">Suprime la jerarquía de directorios operando directamente mediante bloques de cilindros físicos</option>
+                    </select>
+                </div>
+
+                <!-- NOM 3 -->
+                <div class="form-group" data-itemkey="nom3_arbol_global_afs">
+                    <label for="sel-nom-3">3. ¿Qué ventaja fundamental distingue al esquema de estructura única global de nombres (ej. Andrew File System - AFS)?</label>
+                    <select id="sel-nom-3" class="form-control" data-itemkey="nom3_arbol_global_afs">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="INDEPENDENCIA_TOTAL_Y_MOVILIDAD">Proporciona un espacio de nombres homogéneo idéntico para toda la red con movilidad e independencia</option>
+                        <option value="EXIGE_NOMBRE_DE_HOST_EN_CADA_ACCESO">Obliga a los procesos clientes a prefijar la dirección IP del servidor en cada apertura de archivo</option>
+                        <option value="LIMITA_ARCHIVOS_A_ESTACIONES_DISKLESS">Restringe el almacenamiento de archivos compartidos exclusivamente a memoria RAM volátil del host</option>
+                    </select>
+                </div>
+
+                <!-- NOM 4 -->
+                <div class="form-group" data-itemkey="nom4_cadena_resolucion">
+                    <label for="sel-nom-4">4. En la cadena de resolución: Nombre Textual &rarr; [?] &rarr; Máquina &rarr; Bloques de disco, ¿cuál es el nivel intermedio de nombrado?</label>
+                    <select id="sel-nom-4" class="form-control" data-itemkey="nom4_cadena_resolucion">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="IDENTIFICADOR_NUMERICO">Un identificador numérico interno que se asocia a la máquina y a sus bloques físicos</option>
+                        <option value="FRECUENCIA_DEL_BUS_DE_DATOS">La frecuencia de ciclo del reloj del bus PCI y el buffer de interrupción asociado</option>
+                        <option value="NUMERO_DE_SECTOR_SWAP">El número de bloque lógico relativo reservado dentro de la partición de swap</option>
+                    </select>
+                </div>
+
+                <!-- NOM 5 -->
+                <div class="form-group" data-itemkey="nom5_migracion_archivos">
+                    <label for="sel-nom-5">5. Si un archivo se traslada físicamente de un servidor a otro: ¿Qué esquema garantiza que su nombre lógico no deba cambiar?</label>
+                    <select id="sel-nom-5" class="form-control" data-itemkey="nom5_migracion_archivos">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="ESPACIO_GLOBAL_INDEPENDIENTE">Un esquema con independencia de ubicación y estructura global única como AFS</option>
+                        <option value="TECNICA_PRIMITIVA_HOST_LOCAL">La técnica primitiva de host:nombre_local sin soporte para migración de datos</option>
+                        <option value="MONTAJE_ESTATICO_SIN_CACHE">La asociación manual de directorios locales que exige reconfigurar los puntos de montaje</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Matriz Técnica de Políticas de Caché y Replicación (Switches Segmentados) -->
+        <section class="glass-card" id="seccion-3">
+            <h2 class="section-title">3️⃣ Matriz Técnica de Políticas de Caché y Modelos de Replicación</h2>
+            <p class="section-desc">Analice cada uno de los 6 escenarios técnicos y seleccione el principio o técnica de diseño que le corresponde (Diapositivas 24 a 33).</p>
+
+            <details class="biblio-panel">
+                <summary class="biblio-summary">📖 Dónde estudiar este tema en la bibliografía</summary>
+                <div class="biblio-content">
+                    Silberschatz, Galvin & Gagne (7ma Ed.): Capítulo 17. Andrew S. Tanenbaum: Capítulos 10 y 11. Diapositivas de Cátedra: Unidad 6 (Diapositivas 24 a 27: Políticas de actualización y estado; Diapositivas 29 a 33: Formas de replicación).
                 </div>
             </details>
 
             <div class="switches-grid">
                 <!-- SW1 -->
-                <div class="switch-card" data-swid="sw1_esquema_nfs">
-                    <div class="switch-title">Esquema de nombrado NFS (asociación de directorios remotos a directorios locales)</div>
-                    <div class="switch-desc">¿Qué nivel de abstracción de nombrado provee este mecanismo según la teoría?</div>
-                    <div class="segmented-control" role="group">
-                        <button type="button" class="segment-btn" data-value="TRANSPARENCIA_ESTATICA_UBICACION">Transparencia Estática de Ubicación</button>
-                        <button type="button" class="segment-btn" data-value="INDEPENDENCIA_DINAMICA_MOVILIDAD">Independencia Dinámica de Movilidad</button>
-                    </div>
-                </div>
-
-                <!-- SW2 -->
-                <div class="switch-card" data-swid="sw2_politica_escritura">
+                <div class="switch-card" data-swid="sw1_politica_escritura">
                     <div class="switch-title">Política de Escritura Directa (Write-Through) en caché</div>
                     <div class="switch-desc">¿Cuál es la prioridad fundamental de diseño que persigue esta política?</div>
                     <div class="segmented-control" role="group">
                         <button type="button" class="segment-btn" data-value="MAXIMA_FIABILIDAD">Máxima Fiabilidad de Datos</button>
                         <button type="button" class="segment-btn" data-value="MAXIMA_VELOCIDAD_ESCRITURA">Máxima Velocidad de Escritura</button>
+                    </div>
+                </div>
+
+                <!-- SW2 -->
+                <div class="switch-card" data-swid="sw2_volcado_diferido">
+                    <div class="switch-title">Variante de volcado diferido (Write-Back) al cerrar el archivo</div>
+                    <div class="switch-desc">¿Qué técnica vuelca los datos modificados al invocar close() en el cliente?</div>
+                    <div class="segmented-control" role="group">
+                        <button type="button" class="segment-btn" data-value="SEMANTICA_DE_SESION_CLOSE">Semántica de Sesión (Flush on Close)</button>
+                        <button type="button" class="segment-btn" data-value="VOLCADO_POR_EXPULSION_LRU">Volcado por Expulsión de Bloque (LRU)</button>
                     </div>
                 </div>
 
@@ -268,7 +338,7 @@
                 </div>
 
                 <!-- SW4 -->
-                <div class="switch-card" data-swid="sw4_arquitectura_servidor">
+                <div class="switch-card" data-swid="sw4_servidor_stateless">
                     <div class="switch-title">Servidores de archivos sin memoria de estado (Stateless)</div>
                     <div class="switch-desc">¿Qué modelo arquitectónico de servidor describe esta característica?</div>
                     <div class="segmented-control" role="group">
@@ -278,7 +348,7 @@
                 </div>
 
                 <!-- SW5 -->
-                <div class="switch-card" data-swid="sw5_riesgo_replica_retrasada">
+                <div class="switch-card" data-swid="sw5_replica_retrasada">
                     <div class="switch-title">Riesgo intrínseco en la técnica de Réplica Retrasada (Lazy Replication)</div>
                     <div class="switch-desc">¿Qué anomalía de coherencia puede presentarse antes de sincronizar?</div>
                     <div class="segmented-control" role="group">
@@ -288,20 +358,20 @@
                 </div>
 
                 <!-- SW6 -->
-                <div class="switch-card" data-swid="sw6_replica_primaria_spof">
-                    <div class="switch-title">Vulnerabilidad de la Réplica de Copia Primaria (Primary-Backup)</div>
-                    <div class="switch-desc">¿Cuál es el principal defecto de robustez si cae el servidor primario?</div>
+                <div class="switch-card" data-swid="sw6_replica_grupo">
+                    <div class="switch-title">Réplica de archivos mediante un grupo (Active Replication)</div>
+                    <div class="switch-desc">¿Cómo se transmiten las llamadas al sistema en este modelo de réplica?</div>
                     <div class="segmented-control" role="group">
-                        <button type="button" class="segment-btn" data-value="PUNTO_UNICO_DE_FALLO_EN_PRIMARIO">Punto Único de Fallo en Primario</button>
-                        <button type="button" class="segment-btn" data-value="LACK_DE_CONSISTENCIA_SECUNDARIOS">Divergencia entre Secundarios</button>
+                        <button type="button" class="segment-btn" data-value="MULTICAST_SIMULTANEO_GRUPO">Multicast Simultáneo a Todos a la Vez</button>
+                        <button type="button" class="segment-btn" data-value="COPIA_PRIMARIA_BACKUP">Copia Primaria con Paso a Secundarios</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN 3: Laboratorio Interactivo de Modelos de Acceso (Simulador RPC vs Carga/Descarga) -->
-        <section class="glass-card" id="seccion-3">
-            <h2 class="section-title">3️⃣ Laboratorio de Rendimiento: Servicio Remoto (RPC) vs. Carga/Descarga</h2>
+        <!-- SECCIÓN 4: Laboratorio Interactivo de Modelos de Acceso (Simulador RPC vs Carga/Descarga) -->
+        <section class="glass-card" id="seccion-4">
+            <h2 class="section-title">4️⃣ Laboratorio de Rendimiento: Servicio Remoto (RPC) vs. Carga/Descarga</h2>
             <p class="section-desc">
                 Experimente con el simulador interactivo configurando tamaños de archivo, latencia de red y patrones de acceso. Analice los resultados y responda las consignas técnicas.
             </p>
@@ -421,7 +491,7 @@
                 </div>
             </div>
 
-            <!-- Preguntas Evaluativas de la Sección 3 -->
+            <!-- Preguntas Evaluativas de la Sección 4 -->
             <div class="form-grid-2col mt-4">
                 <div class="form-group" data-itemkey="sim_modelo_archivo_grande_pequeno_cambio">
                     <label for="sel-lab-q1">1. Para un archivo de 200 MB donde solo se modifica 1 bloque de 4 KB: ¿Qué modelo minimiza tiempo y tráfico?</label>
@@ -465,9 +535,9 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: Ciclo de Vida RPC (Drag & Drop con SortableJS) -->
-        <section class="glass-card" id="seccion-4">
-            <h2 class="section-title">4️⃣ Ciclo de Vida de una Llamada RPC (Birrell & Nelson)</h2>
+        <!-- SECCIÓN 5: Ciclo de Vida RPC (Drag & Drop con SortableJS) -->
+        <section class="glass-card" id="seccion-5">
+            <h2 class="section-title">5️⃣ Ciclo de Vida de una Llamada RPC (Birrell & Nelson)</h2>
             <p class="section-desc">
                 Ordene secuencialmente las 6 etapas canónicas de una llamada a procedimiento remoto (RPC). Arrastre las tarjetas desde el banco de origen hacia las posiciones numeradas.
             </p>
@@ -550,11 +620,11 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 5: Consenso por Quórum de Gifford -->
-        <section class="glass-card" id="seccion-5">
-            <h2 class="section-title">5️⃣ Laboratorio Matemático y Práctico: Consenso por Quórum de Gifford</h2>
+        <!-- SECCIÓN 6: Consenso por Quórum de Gifford -->
+        <section class="glass-card" id="seccion-6">
+            <h2 class="section-title">6️⃣ Laboratorio Matemático y Práctico: Consenso por Quórum de Gifford</h2>
             <p class="section-desc">
-                Interectúe con el clúster de réplicas distribuidas. Configure los quórums de lectura (Nr) y escritura (Nw), simule caídas de nodos y compruebe las reglas de consistencia de Gifford.
+                Interactúe con el clúster de réplicas distribuidas. Configure los quórums de lectura (Nr) y escritura (Nw), simule caídas de nodos y compruebe las reglas de consistencia de Gifford.
             </p>
 
             <details class="biblio-panel">
@@ -616,7 +686,7 @@
                 </div>
             </div>
 
-            <!-- Preguntas Evaluativas de la Sección 5 -->
+            <!-- Preguntas Evaluativas de la Sección 6 -->
             <div class="form-grid-2col mt-4">
                 <div class="form-group" data-itemkey="q1_condicion_lectura_escritura">
                     <label for="sel-gifford-q1">1. ¿Qué condición formuló Gifford para garantizar que cualquier lectura obtenga la última versión escrita?</label>
@@ -664,7 +734,7 @@
         <section class="glass-card text-center" id="card-export">
             <h2 class="section-title">📦 Finalización y Entrega de Respuestas</h2>
             <p class="section-desc">
-                Una vez completados los 25 ítems académicos y cargados sus datos de estudiante, presione el botón para descargar el archivo de entrega.
+                Una vez completados los 30 ítems académicos y cargados sus datos de estudiante, presione el botón para descargar el archivo de entrega.
             </p>
             <div class="download-container">
                 <button class="btn btn-primary btn-lg" id="btn-download-bottom" disabled>

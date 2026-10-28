@@ -119,31 +119,32 @@ Abra el archivo `web/index.html` en su navegador (Google Chrome, Firefox o Edge)
 explorer.exe web/index.html
 ```
 
-#### Estructura de las Secciones en la Interfaz Web:
+#### Estructura de las Secciones en la Interfaz Web (30 Ítems Académicos):
 
 1. **Datos del Estudiante:** Ingrese su Apellido y Nombre, Número de Legajo y Usuario de GitHub. *(Nota: Estos campos habilitan la descarga pero no influyen en el contador académico).*
-2. **Sección 1: Conceptos Fundamentales de DFS (20 Pts):**
-   * 5 tarjetas de selección estructuradas con redacción simétrica sin negritas inductoras.
-   * Conceptos clave: Servicio vs. Servidor, rendimiento analítico, independencia de ubicación (AFS), ventajas del modelo RPC y cachés en RAM para estaciones *diskless*.
-3. **Sección 2: Matriz de Clasificación Técnica con Switches Segmentados (20 Pts):**
-   * 6 selectores binarios de alta precisión (*anti-misspelling*).
-   * Clasifique: Esquema NFS (transparencia estática), Write-Through (fiabilidad), Callbacks (iniciada por servidor), servidores Stateless (tolerancia a fallos por idempotencia), replicación retrasada (ventana de inconsistencia) y copia primaria (SPOF).
-4. **Sección 3: Laboratorio de Rendimiento: RPC vs. Carga/Descarga (20 Pts):**
-   * Configure el **Simulador Interactivo de Acceso** ajustando el tamaño del archivo (1 MB a 200 MB), patrón de trabajo (modificar 1 bloque vs. compilación intensiva) y latencia RTT (1 ms a 90 ms).
-   * Observe la animación de paquetes y el tablero comparativo de tiempos y tráfico de red para responder las 4 preguntas analíticas.
-5. **Sección 4: Ciclo de Vida RPC de Birrell & Nelson (Drag & Drop) (20 Pts):**
-   * Arrastre las 6 etapas canónicas desde el banco de origen hacia las 6 posiciones numeradas para ordenar la secuencia exacta de llamadas entre el cliente, stubs, núcleos y la red.
-6. **Sección 5: Laboratorio Matemático y Práctico de Quórum de Gifford (20 Pts):**
-   * Manipule los sliders de Quórum de Lectura ($N_r$) y Quórum de Escritura ($N_w$).
-   * Observe los indicadores de validez matemática de las dos reglas de Gifford:
+2. **Sección 1: Conceptos Fundamentales y Rendimiento de DFS (15 Pts - 5 ítems):**
+   * Tarjetas de selección con redacción simétrica sin negritas inductoras.
+   * Conceptos clave: Servicio vs. Servidor, rendimiento analítico (disco, red, CPU), independencia de ubicación, ventajas del modelo RPC y cachés en RAM para estaciones *diskless*.
+3. **Sección 2: Arquitectura de Nombrado, Transparencia y Mapeo de Objetos (15 Pts - 5 ítems):**
+   * Cadena de resolución: Nombre textual $\rightarrow$ Identificador numérico $\rightarrow$ Máquina $\rightarrow$ Bloques físicos.
+   * Los 3 esquemas canónicos de nombrado: `host:nombre_local` (sin transparencia ni independencia), montaje NFS (transparencia estática, vistas disímiles) y estructura global única AFS (movilidad e independencia total de migración).
+4. **Sección 3: Matriz Técnica de Políticas de Caché y Replicación (18 Pts - 6 switches segmentados):**
+   * Clasificación binaria rápida de: Write-Through (fiabilidad), Write-Back diferido al cerrar el archivo (*Session semantics*), Callbacks de AFS (iniciados por el servidor), servidores Stateless (idempotencia), réplica retrasada (ventana de inconsistencia) y réplica por grupo (*Multicast simultáneo*).
+5. **Sección 4: Laboratorio de Rendimiento: RPC vs. Carga/Descarga (16 Pts - 4 ítems):**
+   * Experimentación con el **Simulador Interactivo de Acceso** ajustando tamaño del archivo (1 MB a 200 MB), patrón de trabajo (modificar 1 bloque vs. ciclo intensivo de desarrollo) y latencia RTT (1 ms a 90 ms).
+   * Animación en tiempo real de paquetes y análisis de métricas de red.
+6. **Sección 5: Ciclo de Vida RPC de Birrell & Nelson (18 Pts - 6 ranuras Drag & Drop con SortableJS):**
+   * Ordenamiento jerárquico de las 6 etapas canónicas de una llamada a procedimiento remoto entre el cliente, stubs, núcleos y la red.
+7. **Sección 6: Laboratorio Matemático y Práctico de Quórum de Gifford (18 Pts - 4 ítems):**
+   * Manipulación de sliders para $N_r$ y $N_w$ y verificación matemática de las dos reglas de consistencia de Gifford:
      $$\text{Regla 1: } N_r + N_w > N \quad \text{y} \quad \text{Regla 2: } N_w > \frac{N}{2}$$
-   * Haga clic en los servidores del clúster ($S_1$ a $S_7$) para simular caídas de nodos y compruebe si se mantiene la consistencia al presionar **"📖 Leer Archivo"** o **"✍️ Escribir Archivo"**. Responda las 4 preguntas técnicas vinculadas.
+   * Simulación de caídas en el clúster de 7 servidores y resolución de cálculos para configuraciones ROWA y Mayoría Simple.
 
 ---
 
 ### Paso 3: Exportar `respuestas_tp06.json` y verificar con `./test.sh`
 
-1. Al alcanzar el **100% (25/25 ítems)** en la barra superior fija, se disparará la animación de confetti y se desbloqueará el botón **"📥 Descargar respuestas_tp06.json"**.
+1. Al alcanzar el **100% (30/30 ítems)** en la barra superior fija, se disparará la animación de confetti y se desbloqueará el botón **"📥 Descargar respuestas_tp06.json"**.
 2. Guarde o mueva el archivo descargado hacia la carpeta `soluciones/` del repositorio:
    ```bash
    # Ejemplo moviendo desde la carpeta de Descargas de Windows a WSL2:
@@ -171,31 +172,38 @@ Verificando Módulo Web Interactivo (soluciones/respuestas_tp06.json)...
  Estudiante : Gómez, Lucas Matías
  Legajo     : 18240
  GitHub     : lgomez-unju
- Fecha      : 2026-10-28 00:00:25
+ Fecha      : 2026-10-28 00:20:18
 ------------------------------------------------------------------------
 
-✓ [APROBADO] Sección 1: Conceptos Fundamentales de Sistemas de Archivos Distribuidos: 20.0 / 20 Pts
+✓ [APROBADO] Sección 1: Conceptos Fundamentales y Rendimiento de DFS: 15.0 / 15 Pts
       ✓ q1_definicion_dfs: SERVICIO_ESPECIFICA_SERVIDOR_IMPLEMENTA
       ✓ q2_rendimiento_dfs: ACCESO_DISCO_LATENCIA_RED_COSTO_CPU
       ✓ q3_independencia_ubicacion: PERMITE_MIGRACION_SIN_CAMBIAR_NOMBRE
       ✓ q4_modelo_remoto_vs_carga: EVITA_TRANSFERENCIA_TOTAL_DEL_ARCHIVO
       ✓ q5_ubicacion_cache: SOPORTA_ESTACIONES_SIN_DISCO_Y_MAYOR_VELOCIDAD
 
-✓ [APROBADO] Sección 2: Matriz de Clasificación Técnica con Switches Segmentados: 20.0 / 20 Pts
-      ✓ sw1_esquema_nfs: TRANSPARENCIA_ESTATICA_UBICACION
-      ✓ sw2_politica_escritura: MAXIMA_FIABILIDAD
-      ✓ sw3_semantica_coherencia: INICIO_POR_SERVIDOR
-      ✓ sw4_arquitectura_servidor: SERVICIO_STATELESS
-      ✓ sw5_riesgo_replica_retrasada: VENTANA_DE_INCONSISTENCIA
-      ✓ sw6_replica_primaria_spof: PUNTO_UNICO_DE_FALLO_EN_PRIMARIO
+✓ [APROBADO] Sección 2: Arquitectura de Nombrado, Transparencia y Mapeo de Objetos: 15.0 / 15 Pts
+      ✓ nom1_host_local: SIN_TRANSPARENCIA_NI_INDEPENDENCIA
+      ✓ nom2_montaje_nfs: TRANSPARENCIA_ESTATICA_VISTAS_DISIMILES
+      ✓ nom3_arbol_global_afs: INDEPENDENCIA_TOTAL_Y_MOVILIDAD
+      ✓ nom4_cadena_resolucion: IDENTIFICADOR_NUMERICO
+      ✓ nom5_migracion_archivos: ESPACIO_GLOBAL_INDEPENDIENTE
 
-✓ [APROBADO] Sección 3: Laboratorio Interactivo de Modelos de Acceso y Rendimiento: 20.0 / 20 Pts
+✓ [APROBADO] Sección 3: Matriz Técnica de Políticas de Caché y Replicación: 18.0 / 18 Pts
+      ✓ sw1_politica_escritura: MAXIMA_FIABILIDAD
+      ✓ sw2_volcado_diferido: SEMANTICA_DE_SESION_CLOSE
+      ✓ sw3_semantica_coherencia: INICIO_POR_SERVIDOR
+      ✓ sw4_servidor_stateless: SERVICIO_STATELESS
+      ✓ sw5_replica_retrasada: VENTANA_DE_INCONSISTENCIA
+      ✓ sw6_replica_grupo: MULTICAST_SIMULTANEO_GRUPO
+
+✓ [APROBADO] Sección 4: Laboratorio Interactivo de Modelos de Acceso y Rendimiento: 16.0 / 16 Pts
       ✓ sim_modelo_archivo_grande_pequeno_cambio: SERVICIO_REMOTO_RPC
       ✓ sim_modelo_cargas_intensivas_locales: CARGA_DESCARGA
       ✓ sim_impacto_write_through: BLOQUEO_POR_LATENCIA_RTT_EN_CADA_ESCRITURA
       ✓ sim_tolerancia_fallos_stateless: PETICIONES_AUTOCONTENIDAS_E_IDEMPOTENTES
 
-✓ [APROBADO] Sección 4: Flujo Secuencial del Ciclo RPC de Birrell & Nelson: 20.0 / 20 Pts
+✓ [APROBADO] Sección 5: Flujo Secuencial del Ciclo RPC de Birrell & Nelson: 18.0 / 18 Pts
       ✓ Etapa 1: 1_CLIENTE_LLAMA_STUB_LOCAL
       ✓ Etapa 2: 2_STUB_CLIENTE_CONSTRUYE_MENSAJE
       ✓ Etapa 3: 3_KERNEL_LOCAL_TRANSMITE_RED
@@ -203,7 +211,7 @@ Verificando Módulo Web Interactivo (soluciones/respuestas_tp06.json)...
       ✓ Etapa 5: 5_STUB_SERVIDOR_DESEMPAQUETA_Y_EJECUTA
       ✓ Etapa 6: 6_SERVIDOR_RETORNA_RESULTADO_A_STUB
 
-✓ [APROBADO] Sección 5: Laboratorio Matemático y Práctico de Consenso por Quórum de Gifford: 20.0 / 20 Pts
+✓ [APROBADO] Sección 6: Laboratorio Matemático y Práctico de Consenso por Quórum de Gifford: 18.0 / 18 Pts
       ✓ q1_condicion_lectura_escritura: NR_MAS_NW_MAYOR_N
       ✓ q2_condicion_escritura_escritura: NW_MAYOR_N_MEDIOS
       ✓ q3_rowa_escritura_n5: 5

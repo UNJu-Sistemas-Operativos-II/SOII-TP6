@@ -147,3 +147,14 @@ Dado un sistema con $N$ servidores replicados, cada uno con 1 voto:
 * **Mayoría Simple (Majority Consensus):**
   $$N_r = \lfloor N/2 \rfloor + 1, \quad N_w = \lfloor N/2 \rfloor + 1$$
   *Equilibrio perfecto: tolera hasta $\lfloor (N-1)/2 \rfloor$ nodos caídos tanto para lecturas como para escrituras.*
+
+---
+
+## 🔄 9. Modelos de Replicación de Archivos
+
+| Modelo de Réplica | Mecanismo de Propagación | Transparencia para el Usuario | Riesgo o Limitación |
+| :--- | :--- | :---: | :--- |
+| **Réplica Explícita** | El programador o cliente crea manualmente copias en $S_1, S_2, S_3$. Vincula varias direcciones al mismo nombre lógico. | ❌ Cero (manual) | Búsqueda secuencial manual; sobrecarga de programación. |
+| **Réplica Retrasada (Lazy)** | El cliente escribe en un servidor. Luego el servidor propaga automáticamente las réplicas en segundo plano. | ✅ Alta (automática) | **Ventana de inconsistencia:** si un cliente lee de un secundario antes de la propagación, lee datos obsoletos. |
+| **Réplica por Grupo (Active Multicast)** | Todas las llamadas al sistema se transmiten simultáneamente a todos los servidores a la vez mediante multicast. | ✅ Máxima (transparente) | Requiere primitivas de comunicación grupal atómica ordenada y mayor carga en la red. |
+

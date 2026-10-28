@@ -3,14 +3,14 @@
     "tp_id": "SOII-2026-TP6",
     "title": "TP N° 6: Sistema de Archivos Distribuido (DFS)",
     "catedra": "Sistemas Operativos II - UNJu Facultad de Ingeniería",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "max_score": 100,
   "exercises": {
     "seccion1_conceptos": {
-      "title": "Sección 1: Conceptos Fundamentales de Sistemas de Archivos Distribuidos",
-      "weight": 20,
-      "feedback": "Consultar Diapositivas Unidad 6 (Slides 3-9, 13-14, 18-23) y Silberschatz Cap. 17 sobre Fundamentos y Arquitectura de Sistemas de Archivos Distribuidos.",
+      "title": "Sección 1: Conceptos Fundamentales y Rendimiento de DFS",
+      "weight": 15,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slides 3-9, 13-14, 18-23) y Silberschatz Cap. 17 sobre Fundamentos y Arquitectura de DFS.",
       "hashes": {
         "q1_definicion_dfs": "cf0e27aac656f04512afa8e521fb715bf48ce24455141f591658d0ff4fdd905a",
         "q2_rendimiento_dfs": "8ded8cd0c6141d39e2a771fa092b3e4f7eacc140585c82cc47f6ea34dc6c3cfe",
@@ -19,56 +19,68 @@
         "q5_ubicacion_cache": "b62aa7e236993744326c35c55b0bb0701bf10af614bc61fee4432c2eff5ec0ea"
       }
     },
-    "seccion2_switches": {
-      "title": "Sección 2: Matriz de Clasificación Técnica con Switches Segmentados",
-      "weight": 20,
-      "feedback": "Consultar Diapositivas Unidad 6 (Slides 15, 24-27, 31, 33) sobre políticas de caché, servidores con/sin estado y mecanismos de replicación.",
+    "seccion2_nombrado_transparencia": {
+      "title": "Sección 2: Arquitectura de Nombrado, Transparencia y Mapeo de Objetos",
+      "weight": 15,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slides 10-15) y Silberschatz Cap. 17 sobre Mapeo de Objetos y los 3 Esquemas de Nombrado.",
       "hashes": {
-        "sw1_esquema_nfs": "672443ac41b65899a4c939e375afbd5c11ce67d5d1fd0c91c563160b346f5219",
-        "sw2_politica_escritura": "0a616c9b8a283a51291c9307f4d0d77bfce5e8b922dc865977798e63629facb8",
-        "sw3_semantica_coherencia": "a27a822b9860f925b61e9b78d657f05de28a5389824cef531391cdc3385959bc",
-        "sw4_arquitectura_servidor": "d1728d4d8abdb328775b50f71de3467b472d696b5f8e0f133edb925edeb7bacb",
-        "sw5_riesgo_replica_retrasada": "8f285709b185bd9dd0550541ba03f790660072b0cee6aa749b2d377228d3948c",
-        "sw6_replica_primaria_spof": "42c8ae4d635541210c24fd9a5bec6fd29f8bc8204640f298d092c90ec4ac035d"
+        "nom1_host_local": "750e8614e7a18f6b317aa13a4828769d8f5df9976474e80336286053f015f840",
+        "nom2_montaje_nfs": "817acbc16340f45ebe9bbceefe95f3de3000c00b5701554403ea191c7abecb92",
+        "nom3_arbol_global_afs": "12b4ca43410829f2bcdcb66b61fc76c4546a78b105dda7fde936e9de21d859ef",
+        "nom4_cadena_resolucion": "0b44015107ae5e260fd85d6584f260022499b3fa7d0e2ddebbc6c3ccf4d3a873",
+        "nom5_migracion_archivos": "a56ff07f351d44e145319fe780996467d86412da9b2d7914a4f5ab3befef0430"
       }
     },
-    "seccion3_laboratorio_acceso": {
-      "title": "Sección 3: Laboratorio Interactivo de Modelos de Acceso y Rendimiento",
-      "weight": 20,
-      "feedback": "Consultar el Simulador Interactivo de Modelos de Acceso, Diapositivas Unidad 6 (Slides 18-27) y Tanenbaum Cap. 10 sobre RPC, carga/descarga y servidores sin estado.",
+    "seccion3_switches_politicas": {
+      "title": "Sección 3: Matriz Técnica de Políticas de Caché y Replicación",
+      "weight": 18,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slides 24-27, 29-33) sobre políticas de volcado, coherencia, servidores stateless y modelos de replicación.",
       "hashes": {
-        "sim_modelo_archivo_grande_pequeno_cambio": "835d3b28a56315ae3a9764029b76cf5e0544a0450ad030cf514b3b12c39c6150",
-        "sim_modelo_cargas_intensivas_locales": "07b6b586098c9430defa3cbf3795d37fd05074d16469a6ce7881132f2ea06e67",
-        "sim_impacto_write_through": "6bd427d9df3c94ed6dda5f679cae83fcf3eea6e989b444295307291fdaddfe5c",
-        "sim_tolerancia_fallos_stateless": "27172cf91420238d2c63effe67480d6663d8e90028624706470d2ee525e4e471"
+        "sw1_politica_escritura": "df1557d59214a9aa2966ba70e075f88aa542d1d4fef5e57127dab7ed910fd795",
+        "sw2_volcado_diferido": "e3f2d7447b48a5b3456942cebbd46fdbe3c75b0db71d13e90a784d672c87a1f5",
+        "sw3_semantica_coherencia": "1c17f09763fe1db9ce85e69765cb94d05fcdf5972eb67e096f030ca45be67814",
+        "sw4_servidor_stateless": "90c293a33a79b60008363c1b560e2ecebd8d12d0379819c4e152756a04473055",
+        "sw5_replica_retrasada": "811bb1f4726fb0eebaf5b1759644c7910c67e81e0b824a18d9dbbf675a73f069",
+        "sw6_replica_grupo": "d9430ee17ab19d22eb88526b811a98b9e471a13893f075c6646a22beef7966a2"
       }
     },
-    "seccion4_flujo_rpc": {
-      "title": "Sección 4: Flujo Secuencial del Ciclo RPC de Birrell & Nelson",
-      "weight": 20,
-      "feedback": "Consultar Diapositivas Unidad 6 (Slide 20) y Tanenbaum Cap. 10 sobre los pasos canónicos de RPC propuestos por Birrell y Nelson.",
+    "seccion4_laboratorio_acceso": {
+      "title": "Sección 4: Laboratorio Interactivo de Modelos de Acceso y Rendimiento",
+      "weight": 16,
+      "feedback": "Consultar el Simulador Interactivo de Modelos de Acceso, Diapositivas Unidad 6 (Slides 18-27) y Tanenbaum Cap. 10 sobre RPC y carga/descarga.",
+      "hashes": {
+        "sim_modelo_archivo_grande_pequeno_cambio": "9e19271c2aec8b757b497081b5c15fac4fc50384c3f02b71c4224616158fa4ec",
+        "sim_modelo_cargas_intensivas_locales": "8514b7ed0cae811bf0d963bcd32a01257e49e2c16c40a6916b418d2688727599",
+        "sim_impacto_write_through": "30bcf32c3fc3e869cf7c44511725a91bd2c781249c043acb52ad71d1de09dbd0",
+        "sim_tolerancia_fallos_stateless": "ce1eb20f5afd7ad84ebedcf55d02ea70c37599e189a2d0074d3116bb9cd35ecc"
+      }
+    },
+    "seccion5_flujo_rpc": {
+      "title": "Sección 5: Flujo Secuencial del Ciclo RPC de Birrell & Nelson",
+      "weight": 18,
+      "feedback": "Consultar Diapositivas Unidad 6 (Slide 20) y Tanenbaum Cap. 10 sobre los 10 pasos canónicos de RPC.",
       "type": "ordered_list",
       "list_key": "orden_ciclo_rpc",
       "hashes": {
         "items": [
-          "5980e00ae45b36edba67edf288dd167c1da9ab0dc186fc2dafa6cd9d3b5218a2",
-          "f8e13dc28b821755bdc07f899d8f75914807a8006a02ba30cbdb7363158a9624",
-          "6adf3e873963c53a14e1df9c036bb58f660e8fbe71bea8c42cd6b2b3f4672cc3",
-          "d79bc549783b74dfcc4f05454d3decf32a141ada2d3b2e7dbe5f9b0f098b8a1d",
-          "a1ff05fc818b2b67401805022abd523ff2a7ca1f47c0e45fcc2cd505c3a35b30",
-          "fd9ecc604e68c444e33b7cdfeabe5e879f103a5b1b736898f8cafbf93b327ecc"
+          "d20fe5346e77acce1edfc404cbf9742793258142d9ab190a26d7c2d938a9b2ad",
+          "5044b19c2854ec13be6483206c2c11db83d19c764d2f104329570900cf96a793",
+          "bf3fc078954ead3db10305885f994fa93ff4a5bab0640f5b08dab268d337ff67",
+          "06e8c17782da711576fb40234a32f7030367935c155c6e11ee3538cfecc02473",
+          "92947f73303d8f5690d4f2ad87d072fa4b9e6522ae7eb87bcd183058fd96cf72",
+          "1c87e7402179c1e19923d955872a4f18d8c5f9281668c5883856934fa040a0c9"
         ]
       }
     },
-    "seccion5_quorums_gifford": {
-      "title": "Sección 5: Laboratorio Matemático y Práctico de Consenso por Quórum de Gifford",
-      "weight": 20,
+    "seccion6_quorums_gifford": {
+      "title": "Sección 6: Laboratorio Matemático y Práctico de Consenso por Quórum de Gifford",
+      "weight": 18,
       "feedback": "Consultar el Simulador de Quórums de Gifford, Diapositivas Unidad 6 (Slides 34-36) y Tanenbaum Cap. 11 sobre Quorum Consensus de Gifford.",
       "hashes": {
-        "q1_condicion_lectura_escritura": "ae23ebd38d27b5f6a3c157b67963ad496aa90d19c30dfa860591093f04fde3ee",
-        "q2_condicion_escritura_escritura": "ff02ca88a02dc3522c6d86e8277ab42c435f10170e1ea9d38e6fa5950fd12b6f",
-        "q3_rowa_escritura_n5": "51451b54f273bb4608b1cc34ea3ccafded1b5c0d2735265a34f7f4ffc9796c80",
-        "q4_mayoria_n7": "baf4283ca30571fd37e062e1d4cce0489ac695748847349bf4cb0f270f01606a"
+        "q1_condicion_lectura_escritura": "bb9fc54d8699ca15cd3af05cdf834acf22b217965a50430a1e34a06735545d89",
+        "q2_condicion_escritura_escritura": "06125a31ef36ec85c787d060ef881b4ccfb57daf55258cc0173cb06a86a23295",
+        "q3_rowa_escritura_n5": "7ae7e4dae4aa10b27ffe319622fb59d2e40f389c4730d41a3168c96cf2de9a22",
+        "q4_mayoria_n7": "596e839286cb3264b449d62fbae27cd4eeeffaa81d305ae618aeeda07541534c"
       }
     }
   }

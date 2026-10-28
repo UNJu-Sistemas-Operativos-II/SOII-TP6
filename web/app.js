@@ -2,15 +2,15 @@
  * ==============================================================================
  * SISTEMAS OPERATIVOS II - UNJu - FACULTAD DE INGENIERÍA (2026)
  * APLICACIÓN WEB INTERACTIVA — TRABAJO PRÁCTICO N° 6
- * Tema: Sistema de Archivos Distribuido (DFS) & RPC
+ * Tema: Sistema de Archivos Distribuido (DFS), RPC & Consenso de Gifford
  * ==============================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'UNJU_SO2_TP6_STATE_V1';
-    const TOTAL_ACADEMIC_ITEMS = 25;
+    const STORAGE_KEY = 'UNJU_SO2_TP6_STATE_V2';
+    const TOTAL_ACADEMIC_ITEMS = 30;
 
-    // Estado Reactivo de la Aplicación
+    // Estado Reactivo de la Aplicación (6 Secciones Académicas)
     const state = {
         estudiante: {
             nombre: '',
@@ -24,24 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
             q4_modelo_remoto_vs_carga: null,
             q5_ubicacion_cache: null
         },
-        seccion2_switches: {
-            sw1_esquema_nfs: null,
-            sw2_politica_escritura: null,
-            sw3_semantica_coherencia: null,
-            sw4_arquitectura_servidor: null,
-            sw5_riesgo_replica_retrasada: null,
-            sw6_replica_primaria_spof: null
+        seccion2_nombrado_transparencia: {
+            nom1_host_local: null,
+            nom2_montaje_nfs: null,
+            nom3_arbol_global_afs: null,
+            nom4_cadena_resolucion: null,
+            nom5_migracion_archivos: null
         },
-        seccion3_laboratorio_acceso: {
+        seccion3_switches_politicas: {
+            sw1_politica_escritura: null,
+            sw2_volcado_diferido: null,
+            sw3_semantica_coherencia: null,
+            sw4_servidor_stateless: null,
+            sw5_replica_retrasada: null,
+            sw6_replica_grupo: null
+        },
+        seccion4_laboratorio_acceso: {
             sim_modelo_archivo_grande_pequeno_cambio: null,
             sim_modelo_cargas_intensivas_locales: null,
             sim_impacto_write_through: null,
             sim_tolerancia_fallos_stateless: null
         },
-        seccion4_flujo_rpc: {
+        seccion5_flujo_rpc: {
             orden_ciclo_rpc: [null, null, null, null, null, null]
         },
-        seccion5_quorums_gifford: {
+        seccion6_quorums_gifford: {
             q1_condicion_lectura_escritura: null,
             q2_condicion_escritura_escritura: null,
             q3_rowa_escritura_n5: null,
@@ -92,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------------------------------------------
-    // 3. Cálculo de Progreso Estrictamente Académico
+    // 3. Cálculo de Progreso Estrictamente Académico (30 Ítems)
     // --------------------------------------------------------------------------
     function countCompletedItems() {
         let count = 0;
@@ -102,25 +109,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (state.seccion1_conceptos[k]) count++;
         }
 
-        // Sección 2: 6 switches
-        for (const k in state.seccion2_switches) {
-            if (state.seccion2_switches[k]) count++;
+        // Sección 2: 5 items (Nombrado)
+        for (const k in state.seccion2_nombrado_transparencia) {
+            if (state.seccion2_nombrado_transparencia[k]) count++;
         }
 
-        // Sección 3: 4 selects
-        for (const k in state.seccion3_laboratorio_acceso) {
-            if (state.seccion3_laboratorio_acceso[k]) count++;
+        // Sección 3: 6 switches
+        for (const k in state.seccion3_switches_politicas) {
+            if (state.seccion3_switches_politicas[k]) count++;
         }
 
-        // Sección 4: 6 slots DnD
-        const dnd = state.seccion4_flujo_rpc.orden_ciclo_rpc;
+        // Sección 4: 4 selects (Simulador de Acceso)
+        for (const k in state.seccion4_laboratorio_acceso) {
+            if (state.seccion4_laboratorio_acceso[k]) count++;
+        }
+
+        // Sección 5: 6 slots DnD (Ciclo RPC)
+        const dnd = state.seccion5_flujo_rpc.orden_ciclo_rpc;
         for (let i = 0; i < 6; i++) {
             if (dnd[i]) count++;
         }
 
-        // Sección 5: 4 selects
-        for (const k in state.seccion5_quorums_gifford) {
-            if (state.seccion5_quorums_gifford[k]) count++;
+        // Sección 6: 4 selects (Quórum de Gifford)
+        for (const k in state.seccion6_quorums_gifford) {
+            if (state.seccion6_quorums_gifford[k]) count++;
         }
 
         return count;
@@ -154,12 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
             hasTriggeredConfetti = true;
             if (typeof confetti === 'function') {
                 confetti({
-                    particleCount: 120,
-                    spread: 80,
+                    particleCount: 130,
+                    spread: 85,
                     origin: { y: 0.6 }
                 });
             }
-            showToast('¡Felicitaciones! Ha completado el 100% de las actividades académicas 🎉', 'success');
+            showToast('¡Felicitaciones! Ha completado el 100% de los 30 ítems académicos 🎉', 'success');
         }
 
         saveToLocalStorage();
@@ -183,12 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const parsed = JSON.parse(raw);
             Object.assign(state.estudiante, parsed.estudiante || {});
             Object.assign(state.seccion1_conceptos, parsed.seccion1_conceptos || {});
-            Object.assign(state.seccion2_switches, parsed.seccion2_switches || {});
-            Object.assign(state.seccion3_laboratorio_acceso, parsed.seccion3_laboratorio_acceso || {});
-            if (parsed.seccion4_flujo_rpc && Array.isArray(parsed.seccion4_flujo_rpc.orden_ciclo_rpc)) {
-                state.seccion4_flujo_rpc.orden_ciclo_rpc = parsed.seccion4_flujo_rpc.orden_ciclo_rpc;
+            Object.assign(state.seccion2_nombrado_transparencia, parsed.seccion2_nombrado_transparencia || {});
+            Object.assign(state.seccion3_switches_politicas, parsed.seccion3_switches_politicas || {});
+            Object.assign(state.seccion4_laboratorio_acceso, parsed.seccion4_laboratorio_acceso || {});
+            if (parsed.seccion5_flujo_rpc && Array.isArray(parsed.seccion5_flujo_rpc.orden_ciclo_rpc)) {
+                state.seccion5_flujo_rpc.orden_ciclo_rpc = parsed.seccion5_flujo_rpc.orden_ciclo_rpc;
             }
-            Object.assign(state.seccion5_quorums_gifford, parsed.seccion5_quorums_gifford || {});
+            Object.assign(state.seccion6_quorums_gifford, parsed.seccion6_quorums_gifford || {});
             syncUIToState();
         } catch (e) {
             console.error('Error al cargar estado de localStorage', e);
@@ -212,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Sección 1: Radios
-    document.querySelectorAll('.question-block').forEach(qBlock => {
+    document.querySelectorAll('#seccion-1 .question-block').forEach(qBlock => {
         const qid = qBlock.getAttribute('data-qid');
         qBlock.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', () => {
@@ -224,34 +237,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Sección 2: Switches Segmentados
-    document.querySelectorAll('.switch-card').forEach(card => {
+    // Sección 2: Selects de Nombrado
+    document.querySelectorAll('#seccion-2 select[data-itemkey]').forEach(sel => {
+        const itemKey = sel.getAttribute('data-itemkey');
+        sel.addEventListener('change', () => {
+            state.seccion2_nombrado_transparencia[itemKey] = sel.value || null;
+            updateProgress();
+        });
+    });
+
+    // Sección 3: Switches Segmentados
+    document.querySelectorAll('#seccion-3 .switch-card').forEach(card => {
         const swid = card.getAttribute('data-swid');
         const buttons = card.querySelectorAll('.segment-btn');
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 buttons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                state.seccion2_switches[swid] = btn.getAttribute('data-value');
+                state.seccion3_switches_politicas[swid] = btn.getAttribute('data-value');
                 updateProgress();
             });
         });
     });
 
-    // Sección 3: Selects Dropdown
-    document.querySelectorAll('#seccion-3 select[data-itemkey]').forEach(sel => {
+    // Sección 4: Selects Dropdown (Simulador de Acceso)
+    document.querySelectorAll('#seccion-4 select[data-itemkey]').forEach(sel => {
         const itemKey = sel.getAttribute('data-itemkey');
         sel.addEventListener('change', () => {
-            state.seccion3_laboratorio_acceso[itemKey] = sel.value || null;
+            state.seccion4_laboratorio_acceso[itemKey] = sel.value || null;
             updateProgress();
         });
     });
 
-    // Sección 5: Selects Dropdown
-    document.querySelectorAll('#seccion-5 select[data-itemkey]').forEach(sel => {
+    // Sección 6: Selects Dropdown (Quórum de Gifford)
+    document.querySelectorAll('#seccion-6 select[data-itemkey]').forEach(sel => {
         const itemKey = sel.getAttribute('data-itemkey');
         sel.addEventListener('change', () => {
-            state.seccion5_quorums_gifford[itemKey] = sel.value || null;
+            state.seccion6_quorums_gifford[itemKey] = sel.value || null;
             updateProgress();
         });
     });
@@ -274,8 +296,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Sección 2
-        for (const swid in state.seccion2_switches) {
-            const val = state.seccion2_switches[swid];
+        for (const key in state.seccion2_nombrado_transparencia) {
+            const val = state.seccion2_nombrado_transparencia[key];
+            const sel = document.querySelector(`#seccion-2 select[data-itemkey="${key}"]`);
+            if (sel) sel.value = val || '';
+        }
+
+        // Sección 3
+        for (const swid in state.seccion3_switches_politicas) {
+            const val = state.seccion3_switches_politicas[swid];
             if (val) {
                 const card = document.querySelector(`.switch-card[data-swid="${swid}"]`);
                 if (card) {
@@ -290,20 +319,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Sección 3
-        for (const key in state.seccion3_laboratorio_acceso) {
-            const val = state.seccion3_laboratorio_acceso[key];
-            const sel = document.querySelector(`#seccion-3 select[data-itemkey="${key}"]`);
+        // Sección 4
+        for (const key in state.seccion4_laboratorio_acceso) {
+            const val = state.seccion4_laboratorio_acceso[key];
+            const sel = document.querySelector(`#seccion-4 select[data-itemkey="${key}"]`);
             if (sel) sel.value = val || '';
         }
 
-        // Sección 4 (DnD)
+        // Sección 5 (DnD)
         syncDnDUI();
 
-        // Sección 5
-        for (const key in state.seccion5_quorums_gifford) {
-            const val = state.seccion5_quorums_gifford[key];
-            const sel = document.querySelector(`#seccion-5 select[data-itemkey="${key}"]`);
+        // Sección 6
+        for (const key in state.seccion6_quorums_gifford) {
+            const val = state.seccion6_quorums_gifford[key];
+            const sel = document.querySelector(`#seccion-6 select[data-itemkey="${key}"]`);
             if (sel) sel.value = val || '';
         }
 
@@ -319,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnResetDnd = document.getElementById('btn-reset-dnd');
 
     function syncDnDUI() {
-        const order = state.seccion4_flujo_rpc.orden_ciclo_rpc;
+        const order = state.seccion5_flujo_rpc.orden_ciclo_rpc;
         let placedCount = 0;
 
         // Mover tarjetas según el array de orden
@@ -355,7 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Configurar banco de origen
         Sortable.create(sourceBank, {
             group: 'rpc-dnd',
             animation: 180,
@@ -363,14 +391,12 @@ document.addEventListener('DOMContentLoaded', () => {
             onAdd: () => updateDnDState()
         });
 
-        // Configurar cada ranura de destino
-        targetSlots.forEach((slot, idx) => {
+        targetSlots.forEach((slot) => {
             Sortable.create(slot, {
                 group: 'rpc-dnd',
                 animation: 180,
                 max: 1,
                 onAdd: (evt) => {
-                    // Si ya había una tarjeta en la ranura, regresarla al banco
                     if (slot.children.length > 1) {
                         const existing = evt.item === slot.children[0] ? slot.children[1] : slot.children[0];
                         sourceBank.appendChild(existing);
@@ -387,7 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('click', () => {
                 const parent = card.parentElement;
                 if (parent === sourceBank) {
-                    // Encontrar primera ranura vacía
                     for (let i = 0; i < targetSlots.length; i++) {
                         if (targetSlots[i].children.length === 0) {
                             targetSlots[i].appendChild(card);
@@ -397,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     showToast('Todas las ranuras están ocupadas. Remueva una primero.', 'warn');
                 } else {
-                    // Regresar al banco
                     sourceBank.appendChild(card);
                     updateDnDState();
                 }
@@ -418,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        state.seccion4_flujo_rpc.orden_ciclo_rpc = newOrder;
+        state.seccion5_flujo_rpc.orden_ciclo_rpc = newOrder;
         dndCounter.textContent = `${placedCount} / 6 asignadas`;
         updateProgress();
     }
@@ -427,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.dnd-card').forEach(card => {
             sourceBank.appendChild(card);
         });
-        state.seccion4_flujo_rpc.orden_ciclo_rpc = [null, null, null, null, null, null];
+        state.seccion5_flujo_rpc.orden_ciclo_rpc = [null, null, null, null, null, null];
         dndCounter.textContent = '0 / 6 asignadas';
         updateProgress();
         showToast('Etapas RPC restablecidas al banco de origen', 'info');
@@ -483,7 +507,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         logAccess(`Iniciando simulación: Archivo=${fileSizeMB}MB, RTT=${rttMs}ms, BW=${bwMbps}Mbps, Patrón=${workload}`);
 
-        // Animación visual de paquetes en el canal
         clientStatus.textContent = 'Enviando...';
         serverStatus.textContent = 'Procesando...';
         channelStatus.textContent = 'Tráfico en curso';
@@ -509,57 +532,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
 
         // Cálculos de Modelos
-        // 1. Carga / Descarga
         const transferTimeOneWayMs = (fileSizeMB * 8 / bwMbps) * 1000 + rttMs;
-        let udInitMs = 0;
-        let udExecMs = 0;
-        let udFinalMs = 0;
-        let udTrafficKB = 0;
-
-        // 2. Servicio Remoto (RPC)
-        let rpcInitMs = 0;
-        let rpcExecMs = 0;
-        let rpcFinalMs = 0;
-        let rpcTrafficKB = 0;
+        let udInitMs = 0, udExecMs = 0, udFinalMs = 0, udTrafficKB = 0;
+        let rpcInitMs = 0, rpcExecMs = 0, rpcFinalMs = 0, rpcTrafficKB = 0;
 
         if (workload === 'single_write') {
-            // Carga/Descarga: Descarga completa + modificación en RAM + Carga completa final
             udInitMs = Math.round(transferTimeOneWayMs);
-            udExecMs = 1; // 1 ms modificación local
+            udExecMs = 1;
             udFinalMs = Math.round(transferTimeOneWayMs);
             udTrafficKB = Math.round(fileSizeMB * 1024 * 2);
 
-            // RPC: Solo viaja el bloque de 4 KB (1 RTT)
             rpcInitMs = 0;
             rpcExecMs = Math.round(rttMs + (4 * 8 / (bwMbps * 1024)) * 1000 + 2);
             rpcFinalMs = 0;
-            rpcTrafficKB = 8; // 4 KB petición + 4 KB respuesta
+            rpcTrafficKB = 8;
 
             logAccess(`[Single Write] RPC requirió solo ${rpcExecMs}ms frente a ${udInitMs + udFinalMs}ms de Carga/Descarga!`, 'success');
         } else if (workload === 'sequential_read') {
-            // Lectura secuencial 50%
             const readSizeMB = fileSizeMB * 0.5;
             udInitMs = Math.round(transferTimeOneWayMs);
             udExecMs = Math.round(readSizeMB * 2);
-            udFinalMs = 0; // Solo lectura, no sube
+            udFinalMs = 0;
             udTrafficKB = Math.round(fileSizeMB * 1024);
 
             rpcInitMs = 0;
-            const numBlocks = (readSizeMB * 1024) / 64; // bloques de 64 KB
+            const numBlocks = (readSizeMB * 1024) / 64;
             rpcExecMs = Math.round(numBlocks * (rttMs * 0.2 + (64 * 8 / (bwMbps * 1024)) * 1000));
             rpcFinalMs = 0;
             rpcTrafficKB = Math.round(readSizeMB * 1024 * 1.05);
 
             logAccess(`[Sequential Read] Carga/Descarga transfirió todo el archivo (${fileSizeMB}MB) mientras RPC solo los bloques requeridos.`, 'warn');
         } else if (workload === 'intensive_local') {
-            // Ciclo intensivo: 100 lecturas y 50 escrituras
             udInitMs = Math.round(transferTimeOneWayMs);
-            udExecMs = 15; // 15 ms en local sin latencia de red
+            udExecMs = 15;
             udFinalMs = Math.round(transferTimeOneWayMs);
             udTrafficKB = Math.round(fileSizeMB * 1024 * 2);
 
             rpcInitMs = 0;
-            rpcExecMs = Math.round(150 * rttMs + 50); // Cada operación penalizada por RTT
+            rpcExecMs = Math.round(150 * rttMs + 50);
             rpcFinalMs = 0;
             rpcTrafficKB = Math.round(150 * 16);
 
@@ -569,7 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const rpcTotalMs = rpcInitMs + rpcExecMs + rpcFinalMs;
         const udTotalMs = udInitMs + udExecMs + udFinalMs;
 
-        // Actualizar Tabla de Métricas
         rpcInit.textContent = `${rpcInitMs} ms`;
         rpcExec.textContent = `${rpcExecMs} ms`;
         rpcFinal.textContent = `${rpcFinalMs} ms`;
@@ -633,7 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPresetMajority = document.getElementById('btn-preset-majority');
     const btnPresetInvalid = document.getElementById('btn-preset-invalid');
 
-    // Estado interno del clúster de servidores
     const clusterNodes = Array.from({ length: N_SERVERS }, (_, i) => ({
         id: i + 1,
         name: `Servidor S${i + 1}`,
@@ -683,7 +691,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lblNr.textContent = nr;
         lblNw.textContent = nw;
 
-        // Regla 1: Nr + Nw > N
         const rwSum = nr + nw;
         const rwValid = rwSum > N_SERVERS;
         ruleRwMath.textContent = `Nr + Nw > N  →  ${nr} + ${nw} > ${N_SERVERS} (${rwSum} ${rwValid ? '>' : '≤'} ${N_SERVERS})`;
@@ -695,7 +702,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ruleRwBadge.textContent = '❌ Inseguro (Riesgo de leer versiones obsoletas)';
         }
 
-        // Regla 2: Nw > N/2
         const wwValid = nw > (N_SERVERS / 2);
         ruleWwMath.textContent = `Nw > N/2  →  ${nw} > ${N_SERVERS / 2}`;
         if (wwValid) {
@@ -742,7 +748,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const nw = parseInt(sliderNw.value);
         const activeNodes = clusterNodes.filter(n => n.online);
 
-        // Limpiar resaltados previos
         document.querySelectorAll('.replica-node-card').forEach(c => {
             c.classList.remove('selected-read', 'selected-write');
         });
@@ -753,7 +758,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Seleccionar nr nodos al azar
         const shuffled = [...activeNodes].sort(() => 0.5 - Math.random());
         const quorumGroup = shuffled.slice(0, nr);
 
@@ -762,13 +766,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.classList.add('selected-read');
         });
 
-        // Buscar versión máxima
         let maxVer = -1;
-        let bestNode = null;
         quorumGroup.forEach(n => {
             if (n.version > maxVer) {
                 maxVer = n.version;
-                bestNode = n;
             }
         });
 
@@ -789,7 +790,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const nw = parseInt(sliderNw.value);
         const activeNodes = clusterNodes.filter(n => n.online);
 
-        // Limpiar resaltados previos
         document.querySelectorAll('.replica-node-card').forEach(c => {
             c.classList.remove('selected-read', 'selected-write');
         });
@@ -800,11 +800,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Seleccionar nw nodos al azar
         const shuffled = [...activeNodes].sort(() => 0.5 - Math.random());
         const quorumGroup = shuffled.slice(0, nw);
 
-        // Obtener máxima versión actual del clúster para incrementar
         const currentGlobalMaxVer = Math.max(...clusterNodes.map(n => n.version));
         const newVer = currentGlobalMaxVer + 1;
 
@@ -856,7 +854,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnDownloadTop.addEventListener('click', downloadJSON);
     btnDownloadBottom.addEventListener('click', downloadJSON);
 
-    // Importación JSON
     btnImport.addEventListener('click', () => {
         fileImportInput.value = '';
         fileImportInput.click();
@@ -872,12 +869,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const imported = JSON.parse(evt.target.result);
                 if (imported.estudiante) Object.assign(state.estudiante, imported.estudiante);
                 if (imported.seccion1_conceptos) Object.assign(state.seccion1_conceptos, imported.seccion1_conceptos);
-                if (imported.seccion2_switches) Object.assign(state.seccion2_switches, imported.seccion2_switches);
-                if (imported.seccion3_laboratorio_acceso) Object.assign(state.seccion3_laboratorio_acceso, imported.seccion3_laboratorio_acceso);
-                if (imported.seccion4_flujo_rpc && Array.isArray(imported.seccion4_flujo_rpc.orden_ciclo_rpc)) {
-                    state.seccion4_flujo_rpc.orden_ciclo_rpc = imported.seccion4_flujo_rpc.orden_ciclo_rpc;
+                if (imported.seccion2_nombrado_transparencia) Object.assign(state.seccion2_nombrado_transparencia, imported.seccion2_nombrado_transparencia);
+                if (imported.seccion3_switches_politicas) Object.assign(state.seccion3_switches_politicas, imported.seccion3_switches_politicas);
+                if (imported.seccion4_laboratorio_acceso) Object.assign(state.seccion4_laboratorio_acceso, imported.seccion4_laboratorio_acceso);
+                if (imported.seccion5_flujo_rpc && Array.isArray(imported.seccion5_flujo_rpc.orden_ciclo_rpc)) {
+                    state.seccion5_flujo_rpc.orden_ciclo_rpc = imported.seccion5_flujo_rpc.orden_ciclo_rpc;
                 }
-                if (imported.seccion5_quorums_gifford) Object.assign(state.seccion5_quorums_gifford, imported.seccion5_quorums_gifford);
+                if (imported.seccion6_quorums_gifford) Object.assign(state.seccion6_quorums_gifford, imported.seccion6_quorums_gifford);
 
                 syncUIToState();
                 showToast('Archivo respuestas_tp06.json importado y restaurado exitosamente 📂', 'success');
@@ -889,7 +887,6 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsText(file);
     });
 
-    // Cargar estado inicial
     loadFromLocalStorage();
     updateProgress();
 });
